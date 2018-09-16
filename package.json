@@ -1,0 +1,35 @@
+{
+    "name": "StayfitHub",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node node_modules/react-native/local-cli/cli.js start",
+        "test": "jest"
+    },
+    "dependencies": {
+        "axios": "^0.18.0",
+        "link": "^0.1.5",
+        "react": "16.4.1",
+        "react-native": "0.56.0",
+        "react-native-accordion": "^1.0.1",
+        "react-native-datepicker": "^1.7.2",
+        "react-native-elements": "^0.19.1",
+        "react-native-fbsdk": "^0.8.0",
+        "react-native-linear-gradient": "^2.4.2",
+        "react-native-picker-dropdown": "^0.1.2",
+        "react-native-splash-screen": "^3.1.1",
+        "react-native-vector-icons": "^5.0.0",
+        "react-navigation": "^2.12.1",
+        "react-navigation-material-bottom-tabs": "^0.3.0",
+        "uuid": "^3.3.2"
+    },
+    "devDependencies": {
+        "babel-jest": "23.4.2",
+        "babel-preset-react-native": "^5",
+        "jest": "23.5.0",
+        "react-test-renderer": "16.4.1"
+    },
+    "jest": {
+        "preset": "react-native"
+    }
+}
