@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Avatar, SearchBar, ListItem, Icon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import GradientHeader from '../components/GradientHeader'
+import axios from 'axios';
 import {
   StyleSheet,
   Text,
@@ -10,38 +10,22 @@ import {
   ScrollView
 } from 'react-native';
 var width = Dimensions.get('window').width;
+import CONFIG from '../config/config'
+
 export default class SuperAdminWorkoutHome extends Component {
     constructor(props) {
         super(props);
         this.state ={
           workoutInput: '',
-          workoutList: [
-            {
-              name: 'LiveFit',
-              type: 'Goal: Transform your body'
-            },
-            {
-              name: 'Shortcut To Size',
-              type: 'Goal: Gain weight and build muscle'
-            },
-            {
-              name: '12-Week Trainer',
-              type: 'Goal: Gain weight and build muscle'
-            },
-            {
-              name: 'Labrada Lean Body',
-              type: 'Goal: Lose weight'
-            },
-            {
-              name: 'Shortcut To Shred',
-              type: 'Goal: Lose weight'
-            },
-            {
-              name: 'Big Man On Campus',
-              type: 'Goal: Gain weight and build muscle'
-            }
-          ]
+          workoutsList: []
         }
+        axios.get(CONFIG.base_url + 'workoutPlans')
+        .then((response) => {
+            this.setState({workoutsList:response.data._embedded.workoutPlans})
+        })
+        .catch((error) => {
+            alert(error)
+        })
     }
     static navigationOptions = {
         title: 'Workouts',
@@ -51,7 +35,21 @@ export default class SuperAdminWorkoutHome extends Component {
     const { navigate } = this.props.navigation;
     return (
         <View style={styles.container}>
-        <GradientHeader title="Workout Plans" navigation={this.props.navigation}/>
+        <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+           <Avatar
+               size="small"
+               rounded
+               icon={{name: 'arrow-back'}}
+               onPress={() => navigate("SuperAdminHome")}
+               containerStyle={{margin: 30}}
+           />
+           <Text style={{
+               fontSize:24,
+               color:'white',
+               marginLeft:30,
+               marginTop:-10
+           }}>Workout Plans</Text>
+       </LinearGradient>
        <Icon raised reverse name='add' color='#E62221'
             containerStyle={{
               position:'absolute', 
@@ -76,17 +74,18 @@ export default class SuperAdminWorkoutHome extends Component {
           placeholder='Search workout plans...' />
           <ScrollView>
           {
-            this.state.workoutList
+            this.state.workoutsList
             .filter(i => this.state.workoutInput === '' || i.name.includes(this.state.workoutInput))
             .map((item, i) => (
               <ListItem
                 key={i}
                 title={item.name}
-                subtitle={item.type}
+                subtitle={item.description}
                 containerStyle={{width:width}}
                 leftIcon={{ name: 'av-timer'}}
                 titleStyle={{fontSize:14}}
                 subtitleStyle={{fontSize:12}}
+                onPress={() => navigate('SuperAdminViewWorkout', {workoutPlan: JSON.stringify(item)})}
               />
             ))
           }
@@ -102,10 +101,6 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#F5FCFF',
       width:width
-    },
-    headDesign:{
-      width:width,
-      height:140
     },
     mainIcons:{
       width:width-40,
@@ -134,5 +129,9 @@ const styles = StyleSheet.create({
       alignSelf:'center',
       alignItems:'center',
       marginTop:10
-    }
+    },
+    headDesign:{
+      width:width,
+      height:140
+    },
   });

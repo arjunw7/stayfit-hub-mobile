@@ -12,14 +12,14 @@ import {
   ActivityIndicator
 } from 'react-native';
 var width = Dimensions.get('window').width;
-var url = "http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/"
+import CONFIG from '../config/config'
 export default class SuperAdminGymHome extends Component {
     constructor(props) {
       super(props);
       this.state = {
         gymInput: ''
     }
-    axios.get(url+'fitnessCenters')
+    axios.get(CONFIG.base_url+'fitnessCenters')
       .then((response) => {
           this.setState({fitnessCenters:response.data._embedded.fitnessCenters})
       })
@@ -36,7 +36,21 @@ export default class SuperAdminGymHome extends Component {
     if(this.state.fitnessCenters){
       return (
         <View style={styles.container}>
-        <GradientHeader title="Fitness Centers" navigation={this.props.navigation}/>
+         <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+          <Avatar
+            size="small"
+            rounded
+            icon={{name: 'arrow-back'}}
+            onPress={() => navigate('SuperAdminHome')}
+            containerStyle={{margin: 30}}
+          />
+          <Text style={{
+            fontSize:24,
+            color:'white',
+            marginLeft:30,
+            marginTop:-10
+          }}>Fitness Centers</Text>
+        </LinearGradient>
        <Icon raised reverse name='add' color='#E62221'
             containerStyle={{
               position:'absolute', 

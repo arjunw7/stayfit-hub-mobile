@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Avatar, Icon, SocialIcon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import DatePicker from 'react-native-datepicker';
-import GradientHeader from '../components/GradientHeader'
 import { Picker } from 'react-native-picker-dropdown'
 import axios from 'axios';
 import {
@@ -16,7 +15,8 @@ import {
   ScrollView
 } from 'react-native';
 var width = Dimensions.get('window').width;
-var url = "http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com"
+import CONFIG from '../config/config'
+
 export default class SuperAdminViewEmployee extends Component {
   constructor(props) {
     super(props);
@@ -24,14 +24,14 @@ export default class SuperAdminViewEmployee extends Component {
       employee: this.props.navigation.state.params.employee,
       empType: this.props.navigation.state.params.employeeType
     }
-    axios.get(url+'/headTrainers')
+    axios.get(CONFIG.base_url+'headTrainers')
       .then((response) => {
           this.setState({headTrainersList:response.data._embedded.headTrainers})
       })
       .catch((error) => {
           alert(error)
       })
-      axios.get(url+'/fitnessCenters')
+    axios.get(CONFIG.base_url+'fitnessCenters')
       .then((response) => {
           this.setState({fitnessCentersList:response.data._embedded.fitnessCenters})
       })
@@ -44,16 +44,80 @@ export default class SuperAdminViewEmployee extends Component {
     title: 'Member Details',
     header:null
   };
-  updateFitnessCenter(itemIndex){
-    axios.get(url+'/fitnessCenter/'+itemIndex)
+  componentDidMount(){
+    this.getHeadTrainer();
+    this.getFitnessCenter();
+  }
+  getHeadTrainer(){
+    if(this.state.employee._links.headTrainer){
+      var headTrainersUrl = this.state.employee._links.headTrainer.href
+    axios.get(headTrainersUrl)
     .then((response) => {
-        var tempEmployee = this.state.employee;
-        tempEmployee.fitnessCenter = response.data
-        this.setState({employee:tempEmployee})
+        this.setState({headTrainer:response.data})
     })
     .catch((error) => {
         console.log(error)
-        alert(error)
+    })
+    }
+  }
+  getFitnessCenter(){
+    var fitnessCentersUrl = this.state.employee._links.fitnessCenter.href
+    axios.get(fitnessCentersUrl)
+    .then((response) => {
+        this.setState({fitnessCenter:response.data})
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+  }
+  updateFitnessCenter(itemIndex){
+    axios.get(CONFIG.base_url + 'fitnessCenters/'+itemIndex)
+    .then((response) => {
+        var updatedCenter = response.data._links.self.href
+        var centerURL = this.state.employee._links.fitnessCenter.href
+        axios({ 
+          method: 'PUT', 
+          url: centerURL,
+          headers: {
+            "Content-Type": "text/uri-list"},
+          data: updatedCenter
+         })
+        .then((response) => {
+           this.getFitnessCenter()
+        })
+        .catch((error) => {
+            console.log(error)
+            alert(JSON.stringify(error))
+        })
+    })
+    .catch((error) => {
+        console.log(error)
+        alert(JSON.stringify(error))
+    })
+  }
+  updateHeadTrainer(itemIndex){
+    axios.get(CONFIG.base_url + 'headTrainers/'+itemIndex)
+    .then((response) => {
+        var updatedHT = response.data._links.self.href
+        var empHeadTrainerURL = this.state.employee._links.headTrainer.href
+        axios({ 
+          method: 'PUT', 
+          url: empHeadTrainerURL,
+          headers: {
+            "Content-Type": "text/uri-list"},
+          data: updatedHT
+         })
+        .then((response) => {
+           this.getHeadTrainer()
+        })
+        .catch((error) => {
+            console.log(error)
+            alert(JSON.stringify(error))
+        })
+    })
+    .catch((error) => {
+        console.log(error)
+        alert(JSON.stringify(error))
     })
   }
   updateName(itemValue){
@@ -77,28 +141,15 @@ export default class SuperAdminViewEmployee extends Component {
     this.setState({employee:tempEmployee})
   }
   updateDob(itemValue){
-
     var tempEmployee = this.state.employee;
     tempEmployee.dob = itemValue;
     this.setState({employee:tempEmployee})
   }
-  updateHeadTrainer(itemIndex){
-    axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/headTrainer/'+itemIndex)
-    .then((response) => {
-        var tempEmployee = this.state.employee;
-        tempEmployee.headTrainer = response.data
-        this.setState({employee:tempEmployee})
-    })
-    .catch((error) => {
-        console.log(error)
-        alert(error)
-    })
-  }
   updateEmployee(){
     if(this.state.empType=='trainer'){
-      axios.put('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/trainer/'+this.state.employee.id, this.state.employee)
+      axios.put(CONFIG.base_url + 'trainers/'+this.state.employee.id, this.state.employee)
       .then((response) => {
-          axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/trainer/'+this.state.employee.id)
+          axios.get(CONFIG.base_url + 'trainers/'+this.state.employee.id)
           .then((response) => {
               this.setState({employee:response.data})
               alert("Trainer details updated.")
@@ -113,9 +164,9 @@ export default class SuperAdminViewEmployee extends Component {
           alert(error)
       })
     } else if(this.state.empType=='headTrainer'){
-      axios.put('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/headTrainer/'+this.state.employee.id, this.state.employee)
+      axios.put(CONFIG.base_url + 'headTrainers/'+this.state.employee.id, this.state.employee)
       .then((response) => {
-          axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/headTrainer/'+this.state.employee.id)
+          axios.get(CONFIG.base_url + 'headTrainers/'+this.state.employee.id)
           .then((response) => {
               this.setState({employee:response.data})
               alert("Head trainer details updated.")
@@ -131,9 +182,9 @@ export default class SuperAdminViewEmployee extends Component {
       })
     }
     else if(this.state.empType=='frontdesk'){
-      axios.put('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/frontdeskAdmin/'+this.state.employee.id, this.state.employee)
+      axios.put(CONFIG.base_url +'frontdeskAdmins/'+this.state.employee.id, this.state.employee)
       .then((response) => {
-          axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/frontdeskAdmin/'+this.state.employee.id)
+          axios.get(CONFIG.base_url + 'frontdeskAdmins/'+this.state.employee.id)
           .then((response) => {
               this.setState({employee:response.data})
               alert("Frontdesk admin details updated.")
@@ -150,12 +201,110 @@ export default class SuperAdminViewEmployee extends Component {
     }
     
   }
+  renderFitnessCenter(){
+    if(this.state.fitnessCenter){
+      return(
+        <View style={styles.inputContainer}>
+              <Icon name='rename-box' type='material-community' color="#595959"/>
+              <Picker
+                  selectedValue={this.state.fitnessCenter.id}
+                  style={styles.inputStyle}
+                  placeholder="Select center"
+                  onValueChange={(itemIndex) => this.updateFitnessCenter(itemIndex)}>      
+                  {
+                    this.state.fitnessCentersList
+                    .map((item, i) => (
+                      <Picker.Item key={i} label={item.name + ', ' + item.location} value={item.id} />
+                    ))
+                  }
+            </Picker>
+          </View>
+      )
+    }
+    else{
+      return(
+        <View style={styles.inputContainer}>
+              <Icon name='rename-box' type='material-community' color="#595959"/>
+              <Picker
+                  style={styles.inputStyle}
+                  placeholder="Select center"
+                  onValueChange={(itemIndex) => this.updateFitnessCenter(itemIndex)}>      
+                  {
+                    this.state.fitnessCentersList
+                    .map((item, i) => (
+                      <Picker.Item key={i} label={item.name + ', ' + item.location} value={item.id} />
+                    ))
+                  }
+            </Picker>
+          </View>
+      )
+    }
+  }
+  renderHeadTrainer(){
+    if(this.state.headTrainer){
+      return(
+        <View style={styles.inputContainer}>
+              <Icon name='rename-box' type='material-community' color="#595959"/>
+              <Picker
+                  selectedValue={this.state.headTrainer.id}
+                  style={styles.inputStyle}
+                  placeholder="Select trainer"
+                  onValueChange={(itemValue) => this.updateHeadTrainer(itemValue)}>
+                  {
+                    this.state.headTrainersList
+                    .map((item, i) => (
+                      <Picker.Item key={i} label={item.name} value={item.id} />
+                    ))
+                  }
+            </Picker>
+          </View>
+      )
+    }
+    else{
+      return(
+        <View style={styles.inputContainer}>
+        <Icon name='rename-box' type='material-community' color="#595959"/>
+        <Picker
+            style={styles.inputStyle}
+            placeholder="Select trainer"
+            onValueChange={(itemValue) => this.updateHeadTrainer(itemValue)}>
+            {
+              this.state.headTrainersList
+              .map((item, i) => (
+                <Picker.Item key={i} label={item.name} value={item.id} />
+              ))
+            }
+      </Picker>
+    </View>
+      )
+    }
+  }
+  renderHeader(empType){
+    const {navigate} = this.props.navigation;
+    return(
+            <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+                <Avatar
+                    size="small"
+                    rounded
+                    icon={{name: 'arrow-back'}}
+                    onPress={() => navigate('SuperAdminHome')}
+                    containerStyle={{margin: 30}}
+                />
+                <Text style={{
+                    fontSize:24,
+                    color:'white',
+                    marginLeft:30,
+                    marginTop:-10
+                }}>Add {empType}</Text>
+            </LinearGradient>
+        )
+}
   render() {
     const { navigate } = this.props.navigation;
     if(this.state.headTrainersList && this.state.fitnessCentersList && this.state.empType=='trainer'){
       return(
         <View style={styles.container}>
-        <GradientHeader title="Employee Details" navigation={this.props.navigation}/>
+        {this.renderHeader("Trainer Details")}
         <ScrollView>
          <View style={styles.inputForm}>
           <View style={styles.inputContainer}>
@@ -215,17 +364,17 @@ export default class SuperAdminViewEmployee extends Component {
                     customStyles={{
                       dateInput: {
                         borderWidth:0,
-                        paddingLeft:7,
-                        marginTop:0,
+                        paddingLeft:12,
+                        marginTop:6,
                         paddingTop:0
                       },
                       dateText:{
-                        fontSize:12,
+                        fontSize:16,
                         alignSelf: 'flex-start',
                         alignContent: 'flex-start',
                       },
                       placeholderText:{
-                        fontSize:12,
+                        fontSize:16,
                         alignSelf: 'flex-start',
                         alignContent: 'flex-start',
                       }
@@ -233,36 +382,8 @@ export default class SuperAdminViewEmployee extends Component {
                     onDateChange={(dob) => this.updateDob(dob)}>
               </DatePicker>
           </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-              <Picker
-                  selectedValue={this.state.employee.fitnessCenter.id}
-                  style={styles.inputStyle}
-                  placeholder="Select center"
-                  onValueChange={(itemIndex) => this.updateFitnessCenter(itemIndex)}>      
-                  {
-                    this.state.fitnessCentersList
-                    .map((item, i) => (
-                      <Picker.Item key={i} label={item.name + ', ' + item.location} value={item.id} />
-                    ))
-                  }
-            </Picker>
-          </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-              <Picker
-                  selectedValue={this.state.employee.headTrainer.id}
-                  style={styles.inputStyle}
-                  placeholder="Select trainer"
-                  onValueChange={(itemValue) => this.updateHeadTrainer(itemValue)}>
-                  {
-                    this.state.headTrainersList
-                    .map((item, i) => (
-                      <Picker.Item key={i} label={item.name} value={item.id} />
-                    ))
-                  }
-            </Picker>
-          </View>
+          {this.renderFitnessCenter()}
+          {this.renderHeadTrainer()}
             <TouchableHighlight onPress={() => this.updateEmployee()} underlayColor="transparent">
                 <View style={styles.login}>
                   <Text style={styles.loginText}>Update Employee Details</Text>
@@ -277,7 +398,7 @@ export default class SuperAdminViewEmployee extends Component {
     else if(this.state.headTrainersList && this.state.fitnessCentersList && this.state.empType=='headTrainer'){
       return(
         <View style={styles.container}>
-        <GradientHeader title="Member Details" navigation={this.props.navigation}/>
+        {this.renderHeader("Head Trainers Details")}
         <ScrollView>
          <View style={styles.inputForm}>
           <View style={styles.inputContainer}>
@@ -337,12 +458,12 @@ export default class SuperAdminViewEmployee extends Component {
                     customStyles={{
                       dateInput: {
                         borderWidth:0,
-                        paddingLeft:7,
-                        marginTop:0,
+                        paddingLeft:12,
+                        marginTop:6,
                         paddingTop:0
                       },
                       dateText:{
-                        fontSize:12,
+                        fontSize:16,
                         alignSelf: 'flex-start',
                         alignContent: 'flex-start',
                       },
@@ -355,21 +476,7 @@ export default class SuperAdminViewEmployee extends Component {
                     onDateChange={(dob) => this.updateDob(dob)}>
               </DatePicker>
           </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-              <Picker
-                  selectedValue={this.state.employee.fitnessCenter.id}
-                  style={styles.inputStyle}
-                  placeholder="Select center"
-                  onValueChange={(itemIndex) => this.updateFitnessCenter(itemIndex)}>      
-                  {
-                    this.state.fitnessCentersList
-                    .map((item, i) => (
-                      <Picker.Item key={i} label={item.name + ', ' + item.location} value={item.id} />
-                    ))
-                  }
-            </Picker>
-          </View>
+          {this.renderFitnessCenter()}
             <TouchableHighlight onPress={() => this.updateEmployee()} underlayColor="transparent">
                 <View style={styles.login}>
                   <Text style={styles.loginText}>Update Employee Details</Text>
@@ -384,7 +491,7 @@ export default class SuperAdminViewEmployee extends Component {
     else if(this.state.headTrainersList && this.state.fitnessCentersList && this.state.empType=='frontdesk'){
       return(
         <View style={styles.container}>
-        <GradientHeader title="Member Details" navigation={this.props.navigation}/>
+         {this.renderHeader("Frontdesk Admin Details")}
         <ScrollView>
          <View style={styles.inputForm}>
           <View style={styles.inputContainer}>
@@ -444,8 +551,8 @@ export default class SuperAdminViewEmployee extends Component {
                     customStyles={{
                       dateInput: {
                         borderWidth:0,
-                        paddingLeft:7,
-                        marginTop:0,
+                        paddingLeft:12,
+                        marginTop:6,
                         paddingTop:0
                       },
                       dateText:{
@@ -462,21 +569,7 @@ export default class SuperAdminViewEmployee extends Component {
                     onDateChange={(dob) => this.updateDob(dob)}>
               </DatePicker>
           </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-              <Picker
-                  selectedValue={this.state.employee.fitnessCenter.id}
-                  style={styles.inputStyle}
-                  placeholder="Select center"
-                  onValueChange={(itemIndex) => this.updateFitnessCenter(itemIndex)}>      
-                  {
-                    this.state.fitnessCentersList
-                    .map((item, i) => (
-                      <Picker.Item key={i} label={item.name + ', ' + item.location} value={item.id} />
-                    ))
-                  }
-            </Picker>
-          </View>
+          {this.renderFitnessCenter()}
             <TouchableHighlight onPress={() => this.updateEmployee()} underlayColor="transparent">
                 <View style={styles.login}>
                   <Text style={styles.loginText}>Update Employee Details</Text>
@@ -505,18 +598,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#ededed',
     height:40,
-    padding:5,
-    paddingTop: 8,
+    paddingLeft:5,
     marginTop: 15,
   },
   inputStyle: {
     flex: 1,
-    fontSize:12
+    fontSize:16,
+    height:40,
+    marginTop: -5,
   },
   inputStyle1: {
     flex: 1,
-    paddingLeft: 7,
-    fontSize:12
+    paddingLeft: 12,
+    fontSize:16,
   },
   inputStyle2: {
     marginTop: -6,
@@ -556,5 +650,9 @@ const styles = StyleSheet.create({
   },
     loader:{
       marginTop:'100%',
-    }
+    },
+    headDesign:{
+      width:width,
+      height:140
+    },
 });

@@ -8,7 +8,9 @@ import {
   Dimensions
 } from 'react-native';
 var width = Dimensions.get('window').width;
+import CONFIG from '../config/config'
 export default class SuperAdminAddDiet extends Component {
+  
   render() {
     const { navigate } = this.props.navigation;
     return (

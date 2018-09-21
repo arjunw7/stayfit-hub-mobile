@@ -9,18 +9,20 @@ import {
   View,
   Dimensions,
   TouchableHighlight,
-  TextInput
+  TextInput,
+  AsyncStorage,
+  ActivityIndicator,
+  ScrollView
 } from 'react-native';
 var width = Dimensions.get('window').width;
-var base_url = "http://192.168.0.4:8080/"
+import CONFIG from '../config/config'
 export default class HealthProfileScreen extends Component {
   constructor(props) {
     super(props);
       this.state ={
-          user: JSON.parse(this.props.navigation.state.params.user),
           goalsList:[]
       }
-      axios.get(base_url + 'goals')
+      axios.get(CONFIG.base_url + 'goals')
         .then((response) => {
             this.setState({goalsList:response.data._embedded.goals})
         })
@@ -33,16 +35,21 @@ export default class HealthProfileScreen extends Component {
     header:null
   };
 
-  componentDidMount(){
-   axios.get(base_url + 'members/' + this.state.user.id)
-    .then((response) => {
-        this.setState({user:response.data})
-        this.getGoal()
-    })
-    .catch((error) => {
-        alert(error)
+  componentWillMount(){
+    AsyncStorage.getItem('member').then((member) => {
+      var user  = JSON.parse(member);
+      var goalURL = user._links.goal.href
+      axios.get(goalURL)
+        .then((response) => {
+            this.setState({goal:response.data})
+        })
+        .catch((error) => {
+            alert(error)
+        })
+      this.setState({user:JSON.parse(member)})
     })
   }
+
   getGoal(){
     var goalURL = this.state.user._links.goal.href
     axios.get(goalURL)
@@ -53,6 +60,15 @@ export default class HealthProfileScreen extends Component {
             alert(error)
         })
   }
+ 
+  async saveItem(item, selectedValue) {
+    try {
+        await AsyncStorage.setItem(item, selectedValue);
+    } catch (error) {
+        alert("AsyncStorage error")
+        console.error('AsyncStorage error: ' + error.message);
+    }
+    }
   
   submitChanges(){
     alert("Changes saved successfully.")
@@ -67,8 +83,33 @@ export default class HealthProfileScreen extends Component {
     tempMember.weight = itemValue
     this.setState({user:tempMember})
   }
+  updateWaist(itemValue){
+    var tempMember = this.state.user;
+    tempMember.waistSize = itemValue
+    this.setState({user:tempMember})
+  }
+  updateHip(itemValue){
+    var tempMember = this.state.user;
+    tempMember.hipSize = itemValue
+    this.setState({user:tempMember})
+  }
+  updateAlcohol(itemValue){
+    var tempMember = this.state.user;
+    tempMember.alcoholStatus = itemValue
+    this.setState({user:tempMember})
+  }
+  updateActivity(itemValue){
+    var tempMember = this.state.user;
+    tempMember.activityStatus = itemValue
+    this.setState({user:tempMember})
+  }
+  updateSmoking(itemValue){
+    var tempMember = this.state.user;
+    tempMember.smokingStatus = itemValue
+    this.setState({user:tempMember})
+  }
   updateGoal(itemIndex){
-    axios.get(base_url + 'goals/'+itemIndex)
+    axios.get(CONFIG.base_url + 'goals/'+itemIndex)
     .then((response) => {
         var updatedGoal = response.data._links.self.href
         var goalURL = this.state.user._links.goal.href
@@ -93,10 +134,11 @@ export default class HealthProfileScreen extends Component {
     })
   }
   updateMember(){
-      axios.put(base_url + 'members/'+this.state.user.id, this.state.user)
+      axios.put(CONFIG.base_url + 'members/'+this.state.user.id, this.state.user)
       .then((response) => {
-          axios.get(base_url + 'members/'+this.state.user.id)
+          axios.get(CONFIG.base_url + 'members/'+this.state.user.id)
           .then((response) => {
+              this.saveItem('member', JSON.stringify(response.data))
               this.setState({user:response.data})
               alert("Member details updated.")
           })
@@ -142,6 +184,190 @@ export default class HealthProfileScreen extends Component {
       )
     }
   }
+   renderSmoking(){
+    if(this.state.goal){
+      return(
+        <Picker
+              selectedValue={this.state.user.smokingStatus}
+              style={styles.inputStyle}
+              placeholder="Select goal"
+              onValueChange={(itemIndex) => this.updateSmoking(itemIndex)}>   
+              <Picker.Item label={"Heavy"} value={"Heavy"} />
+              <Picker.Item label={"Moderate"} value={"Moderate"} />
+              <Picker.Item label={"No Smoker"} value={"No Smoker"} />
+              <Picker.Item label={"Used to be a smoker"} value={"Used to be a smoker"} />
+        </Picker>
+      )
+    } else{
+      return(
+        <Picker
+              style={styles.inputStyle}
+              placeholder="Select goal"
+              onValueChange={(itemIndex) => this.updateSmoking(itemIndex)}>  
+              <Picker.Item label={"Heavy"} value={"Heavy"} />
+              <Picker.Item label={"Moderate"} value={"Moderate"} />
+              <Picker.Item label={"No Smoker"} value={"No Smoker"} />
+              <Picker.Item label={"Used to be a smoker"} value={"Used to be a smoker"} />
+        </Picker>
+      )
+    }
+  }
+  renderAlcohol(){
+    if(this.state.goal){
+      return(
+        <Picker
+              selectedValue={this.state.user.alcoholStatus}
+              style={styles.inputStyle}
+              placeholder="Select goal"
+              onValueChange={(itemIndex) => this.updateAlcohol(itemIndex)}>   
+              <Picker.Item label={"Heavy"} value={"Heavy"} />
+              <Picker.Item label={"Moderate"} value={"Moderate"} />
+              <Picker.Item label={"No Driking"} value={"No Drinking"} />
+              <Picker.Item label={"Used to drink"} value={"Used to drink"} />
+        </Picker>
+      )
+    } else{
+      return(
+        <Picker
+              style={styles.inputStyle}
+              placeholder="Select goal"
+              onValueChange={(itemIndex) => this.updateAlcohol(itemIndex)}>  
+              <Picker.Item label={"Heavy"} value={"Heavy"} />
+              <Picker.Item label={"Moderate"} value={"Moderate"} />
+              <Picker.Item label={"No Smoker"} value={"No Smoker"} />
+              <Picker.Item label={"Used to be a smoker"} value={"Used to be a smoker"} />
+        </Picker>
+      )
+    }
+  }
+  renderActivity(){
+    if(this.state.goal){
+      return(
+        <Picker
+              selectedValue={this.state.user.activityStatus}
+              style={styles.inputStyle}
+              placeholder="Select goal"
+              onValueChange={(itemIndex) => this.updateActivity(itemIndex)}>   
+              <Picker.Item label={"Sedentary"} value={"Sedentary"} />
+              <Picker.Item label={"Low Active Level"} value={"Low Active Level"} />
+              <Picker.Item label={"Active"} value={"Active"} />
+              <Picker.Item label={"Very active"} value={"Very active"} />
+        </Picker>
+      )
+    } else{
+      return(
+        <Picker
+              style={styles.inputStyle}
+              placeholder="Select goal"
+              onValueChange={(itemIndex) => this.updateActivity(itemIndex)}>  
+              <Picker.Item label={"Heavy"} value={"Heavy"} />
+              <Picker.Item label={"Moderate"} value={"Moderate"} />
+              <Picker.Item label={"No Smoker"} value={"No Smoker"} />
+              <Picker.Item label={"Used to be a smoker"} value={"Used to be a smoker"} />
+        </Picker>
+      )
+    }
+  }
+  renderWeight(){
+    if(this.state.user.weight){
+      return(
+         <TextInput
+                maxLength={4}
+                keyboardType="decimal-pad"
+                style={styles.inputStyle}
+                placeholder="Enter weight"
+                value={this.state.user.weight.toString()}
+                onChangeText={(weight) => this.updateWeight(weight)}
+              />
+      )
+    }
+    else{
+      return(
+         <TextInput
+              maxLength={4}
+              keyboardType="decimal-pad"
+              style={styles.inputStyle}
+              placeholder="Enter weight"
+              onChangeText={(weight) => this.updateWeight(weight)}
+            />
+    )
+    }
+  }
+    renderWaist(){
+    if(this.state.user.waistSize){
+      return(
+            <TextInput
+                maxLength={4}
+                keyboardType="decimal-pad"
+                style={styles.inputStyle}
+                placeholder="Enter weight"
+                value={this.state.user.waistSize.toString()}
+                onChangeText={(weight) => this.updateWaist(weight)}
+              />
+      )
+    }
+    else{
+      return(
+          <TextInput
+              maxLength={4}
+              keyboardType="decimal-pad"
+              style={styles.inputStyle}
+              placeholder="Enter weight"
+              onChangeText={(weight) => this.updateWaist(weight)}
+            />
+    )
+    }
+  }
+  renderHip(){
+    if(this.state.user.hipSize){
+      return(
+            <TextInput
+                maxLength={4}
+                keyboardType="decimal-pad"
+                style={styles.inputStyle}
+                placeholder="Enter height"
+                value={this.state.user.hipSize.toString()}
+                onChangeText={(height) => this.updateHip(height)}
+              />
+      )
+    }
+    else{
+      return(
+          <TextInput
+              maxLength={4}
+              keyboardType="decimal-pad"
+              style={styles.inputStyle}
+              placeholder="Enter height"
+              onChangeText={(height) => this.updateHip(height)}
+            />
+    )
+    }
+  }
+  renderHeight(){
+    if(this.state.user.height){
+      return(
+            <TextInput
+                maxLength={4}
+                keyboardType="decimal-pad"
+                style={styles.inputStyle}
+                placeholder="Enter height"
+                value={this.state.user.height.toString()}
+                onChangeText={(height) => this.updateHeight(height)}
+              />
+      )
+    }
+    else{
+      return(
+          <TextInput
+              maxLength={4}
+              keyboardType="decimal-pad"
+              style={styles.inputStyle}
+              placeholder="Enter height"
+              onChangeText={(height) => this.updateHeight(height)}
+            />
+    )
+    }
+  }
   calculateBMI(){
     var w = this.state.user.weight
     var h = this.state.user.height * 0.3
@@ -149,88 +375,90 @@ export default class HealthProfileScreen extends Component {
   }
   render() {
     const { navigate } = this.props.navigation;
-    return (
-      <View style={styles.container}>
-          <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
-          <Avatar
-            size="small"
-            rounded
-            icon={{name: 'arrow-back'}}
-            onPress={() => navigate('Profile')}
-            containerStyle={{margin: 30}}
-          />
-          <Text style={{
-            fontSize:24,
-            color:'white',
-            marginLeft:30,
-            marginTop:20
-          }}>My Health Profile</Text>
-        </LinearGradient>
-        <View style={styles.inputForm}>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-            <TextInput
-                maxLength={4}
-                keyboardType="decimal-pad"
-                style={styles.inputStyle1}
-                placeholder="Enter height"
-                value={this.state.user.height.toString()}
-                onChangeText={(height) => this.updateHeight(height)}
-              />
-          </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-            <TextInput
-                maxLength={4}
-                keyboardType="decimal-pad"
-                style={styles.inputStyle1}
-                placeholder="Enter weight"
-                value={this.state.user.weight.toString()}
-                onChangeText={(weight) => this.updateWeight(weight)}
-              />
-          </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-              {this.renderGoal()}
-          </View>
-          </View>
-          <View style={styles.bottomSection}>
-          <LinearGradient 
-              colors={['#e0e0e0', '#e0e0e0', '#e0e0e0']} style={{
-              width:width/2-20,
-              alignSelf:'center',
-              paddingTop:20,
-              paddingBottom:20,
-              marginRight:10,
-              borderRadius:5
-            }}>
-            <Text style={styles.mainText}>
-              BODY MASS INDEX</Text>
-            <Text style={styles.subtext}>NORMAL</Text>
-            <Text style={styles.bigNumber}>{this.calculateBMI()}</Text>
-            
+    if(this.state.user && this.state.goalsList){
+      return (
+        <View style={styles.container}>
+            <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+            <Avatar
+              size="small"
+              rounded
+              icon={{name: 'arrow-back'}}
+              onPress={() => navigate('Profile')}
+              containerStyle={{margin: 30}}
+            />
+            <Text style={{
+              fontSize:24,
+              color:'white',
+              marginLeft:30,
+              marginTop:-10
+            }}>My Health Profile</Text>
           </LinearGradient>
-          <LinearGradient 
-              colors={['#e0e0e0', '#e0e0e0', '#e0e0e0']}  style={{
-              width:width/2-20,
-              alignSelf:'center',
-              paddingTop:20,
-              paddingBottom:20,
-              borderRadius:5
-            }}>
-            <Text style={styles.mainText}>
-              IDEAL WEIGHT</Text>
-            <Text style={styles.subtext}>ACCORDING TO WEIGHT</Text>
-            <Text style={styles.bigNumber}>67.23</Text>
-          </LinearGradient>
-    </View>
-    <TouchableHighlight onPress={() =>this.updateMember()} underlayColor="transparent"  style={{marginTop:100}}>
-        <View style={styles.login}>
-          <Text style={styles.loginText}>Save</Text>
+          <ScrollView>
+          <View style={styles.inputForm}>
+            <Text style={styles.label}>Your height(in feet)</Text>
+            {this.renderHeight()}
+            <Text style={styles.label}>Your weight(in KGs)</Text>
+            {this.renderWeight()}
+            <Text style={styles.label}>Your waist size(in inches)</Text>
+            {this.renderWaist()}
+            <Text style={styles.label}>Your hip size(in inches)</Text>
+            {this.renderHip()}
+            <Text style={styles.label}>Your fitness goal</Text>
+            {this.renderGoal()}
+            <Text style={styles.label}>How active are you?</Text>
+            {this.renderActivity()}
+            <Text style={styles.label}>How much do you smoke?</Text>
+            {this.renderSmoking()}
+            <Text style={styles.label}>How is your alcohol intake?</Text>
+            {this.renderAlcohol()}
+            <View style={styles.bottomSection}>
+              <LinearGradient 
+                  colors={['#e0e0e0', '#e0e0e0', '#e0e0e0']} style={{
+                  width:width/2-45,
+                  alignSelf:'center',
+                  paddingTop:20,
+                  paddingBottom:20,
+                  marginRight:10,
+                  borderRadius:5
+                }}>
+                <Text style={styles.mainText}>
+                  BODY MASS INDEX</Text>
+                <Text style={styles.subtext}>NORMAL</Text>
+                <Text style={styles.bigNumber}>{this.calculateBMI()}</Text>
+                
+              </LinearGradient>
+              <LinearGradient 
+                  colors={['#e0e0e0', '#e0e0e0', '#e0e0e0']}  style={{
+                  width:width/2-45,
+                  alignSelf:'center',
+                  paddingTop:20,
+                  paddingBottom:20,
+                  borderRadius:5
+                }}>
+                <Text style={styles.mainText}>
+                  IDEAL WEIGHT</Text>
+                <Text style={styles.subtext}>ACCORDING TO WEIGHT</Text>
+                <Text style={styles.bigNumber}>67.23</Text>
+              </LinearGradient>
+          </View>
+              <TouchableHighlight onPress={() =>this.updateMember()} underlayColor="transparent">
+                  <View style={styles.login}>
+                    <Text style={styles.loginText}>Save</Text>
+                  </View>
+              </TouchableHighlight>
+          </View>
+      </ScrollView>
         </View>
-    </TouchableHighlight>
-      </View>
-    );
+      );
+    }
+    else{
+      return(
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      )
+    }
+   
   }
 }
 
@@ -241,34 +469,16 @@ const styles = StyleSheet.create({
   },
   headDesign:{
     width:width,
-    height:160
-  },
-  aboutRow:{
-    width:width-40,
-    marginLeft:20,
-    marginRight:20,
-    borderBottomWidth:1,
-    borderBottomColor:'#e4e4e4',
-    height:50
-  },
-  fieldName:{
-    position:'absolute',
-    left:40,
-    top:16
-  },
-  reps:{
-    position:'absolute',
-    right:10,
-    top:16,
-    fontSize:12
+    height:140
   },
   bottomSection:{
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems:'center',
-    width:width-30,
+    width:width-60,
     alignSelf:'center',
-    marginTop:20
+    padding:10,
+    paddingTop: 20
   },
   bigNumber:{
     fontWeight:'bold',
@@ -288,61 +498,38 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     color:'#565656'
   },
-  inputContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#ededed',
+  inputStyle:{
+    width:width-80,
     height:40,
-    padding:5,
-    paddingTop: 8,
+    paddingLeft: 5,
+    borderBottomColor:'#E62221',
+    borderBottomWidth: 1,
+  },
+  label:{
+    color:'#E62221',
     marginTop: 15,
-  },
-  inputStyle: {
-    flex: 1,
-    fontSize:12
-  },
-  inputStyle1: {
-    flex: 1,
-    paddingLeft: 7,
-    fontSize:12
-  },
-  inputStyle2: {
-    marginTop: -6,
   },
   inputForm:{
     margin:20,
-    padding:10,
+    padding:20,
     paddingTop:0,
     width:width-40,
     backgroundColor:'white'
   },
-  inputText:{
-    width:width-80,
-    borderWidth:0,
-    borderBottomColor: '#E62221',
-    borderBottomWidth: 1,
-    marginTop: 5,
-    marginBottom: 5,
-    height:30
+  loader:{
+    marginTop:'100%',
   },
-  inputLabel:{
+  login:{
+    width:width-80,
+    height:50,
+    backgroundColor: '#E62221',
+    borderRadius: 50,
+    alignItems: 'center',
+    padding:8,
+    paddingTop:15,
     marginTop: 20,
   },
-    loader:{
-      marginTop:'100%',
-    },
-    login:{
-      width:width-80,
-      height:50,
-      backgroundColor: '#E62221',
-      borderRadius: 50,
-      marginBottom: 30,
-      alignItems: 'center',
-      padding:8,
-      paddingTop:15,
-      marginTop: 40,
-      marginLeft: 40,
-    },
-    loginText:{
-      color:'white'
-    },
+  loginText:{
+    color:'white'
+  },
 });

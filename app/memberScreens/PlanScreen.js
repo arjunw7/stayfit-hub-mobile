@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
+import { Picker } from 'react-native-picker-dropdown';
+import Moment from 'moment';
 import {
   StyleSheet,
   Text,
@@ -9,9 +11,11 @@ import {
   ScrollView,
   Modal,
   TouchableHighlight,
-  Picker,
-  AsyncStorage
+  AsyncStorage,
 } from 'react-native';
+
+import axios from 'axios';
+import CONFIG from '../config/config'
 import DatePicker from 'react-native-datepicker'
 import { ButtonGroup, Header, Icon } from 'react-native-elements';
 var width = Dimensions.get('window').width;
@@ -19,31 +23,113 @@ export default class PlanScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: JSON.parse(this.props.navigation.state.params.member),
       checked:false,
       bookingModalVisible: false,
       queryModalVisible: false,
       index:0,
       date:'',
       time:'',
-      bookingTime: '04:00 PM'
+      bookingTime: '04:00 PM',
+      fitnessCentersList:[],
+      today:{}
     }
-    _retrieveData = async () => {
-      try {
-        const value = await AsyncStorage.getItem('user');
-        if (value !== null) {
-          this.setState({
-            user: JSON.parse(value)
-          })
-        }
-       } catch (error) {
-         // Error retrieving data
-       }
+    axios.get(CONFIG.base_url + 'fitnessCenters')
+    .then((response) => {
+        this.setState({fitnessCentersList:response.data._embedded.fitnessCenters})
+    })
+    .catch((error) => {
+        alert(error)
+    })
+    
+}
+componentWillMount(){
+  AsyncStorage.getItem('member').then((member) => {
+    this.setState({user:JSON.parse(member)})
+    this.getTodaysAppointment(JSON.parse(member).id)
+  })
+  var endDate = new Date();
+    endDate.setDate(endDate.getDate() + 5);
+    this.setState({
+      endDate:endDate
+    })
+}
+getTodaysAppointment(id){
+   axios.get(CONFIG.base_url + 'members/' +id + '/todaysAppointments')
+    .then((response) => {
+        if(response.data[0]){
+          this.setState({today:response.data[0], fc:response.data[0].fitnessCenter})
+        }  
+        else this.setState({today:null, fc:null})
+    })
+    .catch((error) => {
+        alert(error)
+    })
+}
+renderFitnessCenter(){
+  if(this.state.fitnessCentersList){
+    return(
+      <Picker
+              selectedValue={this.state.fitnessCenter}
+              style={styles.inputStyle}
+              placeholder="Select trainer"
+              onValueChange={(itemValue) => this.setState({fitnessCenter:itemValue})}>
+              {
+                this.state.fitnessCentersList
+                .map((item, i) => (
+                  <Picker.Item key={i} label={item.name} value={item.id} />
+                ))
+              }
+        </Picker>
+    )}
+    else {
+      return(
+      <Picker
+
+            style={styles.inputStyle}
+            placeholder="Select trainer"
+            onValueChange={(itemValue) => this.setState({fitnessCenter:itemValue})}>
+            {
+              this.state.fitnessCentersList
+              .map((item, i) => (
+                <Picker.Item key={i} label={item.name} value={item.id} />
+              ))
+            }
+      </Picker>
+    )
     }
 }
-componentDidMount(){
-  
+renderTodaysAppointment(){
+  const { navigate } = this.props.navigation;
+  if(this.state.today && this.state.fc){
+    return(
+      <View>
+      <Text style={{marginLeft:25, fontSize:24, marginTop:10, marginBottom:10, fontWeight:'bold'}}>
+                  Today's Appointment
+      </Text>
+        <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.appointmentBox}>
+        <Text style={styles.appDate}>{Moment(this.state.today.date).format('DD MMM, ddd')}</Text>
+        <Text style={styles.appTime}>{this.state.today.timeSlot}</Text>
+        <Text style={styles.appLocation}>{this.state.fc.name + ', ' + this.state.fc.location} </Text>
+        <Icon containerStyle={styles.delAppointment} color="white" name='close' onPress={() => this.deleteAppointment(this.state.today.id)}/>
+        <TouchableHighlight onPress={() => navigate("AttendanceScanner")}
+            underlayColor="transparent">
+            <View style={styles.submitButton}>
+                <Text style={styles.submitText}>Mark Attendance</Text>
+            </View>
+        </TouchableHighlight>
+      </LinearGradient>
+      </View>
+    )
+  }
+  else {
+    return(
+        <Text style={{marginLeft:25, fontSize:18, marginTop:10, marginBottom:10, fontWeight:'bold'}}>
+            No appointment for today. Book Now!
+      </Text>
+    )
+  }
 }
+
   static navigationOptions = {
     title: 'Plan',
     header: null
@@ -58,6 +144,27 @@ componentDidMount(){
   }
   setQueryModalVisible(visible) {
     this.setState({queryModalVisible: visible});
+  }
+  deleteAppointment(id){
+    Alert.alert(
+      'Cancel appointment',
+      'Are you sure you want to cancel the appointment?',
+      [
+        {text: 'No', onPress: () => console.log('Ask me later pressed')},
+        {text: 'Yes', onPress: () => this.cancelAppointment(id)},
+      ],
+      { cancelable: true }
+    )
+  }
+  cancelAppointment(id){
+    axios.delete(CONFIG.base_url +'appointments/' + id)
+    .then((response) => {
+      alert("Appointment has been cancelled.")
+      this.getTodaysAppointment(this.state.user.id)
+    })
+    .catch((error) => {
+        alert(error)
+    })
   }
 
   RenderPlan(index) {
@@ -78,22 +185,22 @@ componentDidMount(){
             />
             <View>
               <View style={styles.scheduleItem}>
-              <Icon name='radio-button-unchecked' iconStyle={{position:'absolute', left:10, top:12}}/>
+              <Icon name='radio-button-unchecked' containerStyle={{position:'absolute', left:10, top:12}}/>
                 <Text style={styles.activityName}>Push Up Burpees - 12</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View>
               <View style={styles.scheduleItem}>
-              <Icon name='radio-button-unchecked' iconStyle={{position:'absolute', left:10, top:12}} />
+              <Icon name='radio-button-unchecked' containerStyle={{position:'absolute', left:10, top:12}} />
                 <Text style={styles.activityName}>Overhead Squats - 16</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View>
               <View style={styles.scheduleItem}>
-              <Icon name='radio-button-unchecked' iconStyle={{position:'absolute', left:10, top:12}}/>
+              <Icon name='radio-button-unchecked' containerStyle={{position:'absolute', left:10, top:12}}/>
                 <Text style={styles.activityName}>Half Crunches - 12</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View >
               <View style={styles.scheduleItem}>
-                <Icon name='radio-button-unchecked' iconStyle={{position:'absolute', left:10, top:12}} />
+                <Icon name='radio-button-unchecked' containerStyle={{position:'absolute', left:10, top:12}} />
                 <Text style={styles.activityName}>Flutter Kicks - 20</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View>
@@ -103,22 +210,22 @@ componentDidMount(){
             </Text>
             <View>
               <View style={styles.scheduleItem}>
-              <Icon name='check-circle' iconStyle={{position:'absolute', left:10, top:12}}/>
+              <Icon name='check-circle' containerStyle={{position:'absolute', left:10, top:12}}/>
                 <Text style={styles.activityName}>Push Up Burpees - 12</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View>
               <View style={styles.scheduleItem}>
-              <Icon name='check-circle' iconStyle={{position:'absolute', left:10, top:12}} />
+              <Icon name='check-circle' containerStyle={{position:'absolute', left:10, top:12}} />
                 <Text style={styles.activityName}>Overhead Squats - 16</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View>
               <View style={styles.scheduleItem}>
-              <Icon name='check-circle' iconStyle={{position:'absolute', left:10, top:12}}/>
+              <Icon name='check-circle' containerStyle={{position:'absolute', left:10, top:12}}/>
                 <Text style={styles.activityName}>Half Crunches - 12</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View >
               <View style={styles.scheduleItem}>
-                <Icon name='check-circle' iconStyle={{position:'absolute', left:10, top:12}} />
+                <Icon name='check-circle' containerStyle={{position:'absolute', left:10, top:12}} />
                 <Text style={styles.activityName}>Flutter Kicks - 20</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View>
@@ -142,22 +249,22 @@ componentDidMount(){
             />
             <View>
               <View style={styles.scheduleItem}>
-              <Icon name='radio-button-unchecked' iconStyle={{position:'absolute', left:10, top:12}}/>
-                <Text style={styles.activityName}>Push Up Burpees - 12</Text>
-                <Text style={styles.reps}>3 Reps</Text>
+              <Icon name='radio-button-unchecked' containerStyle={{position:'absolute', left:10, top:12}}/>
+                <Text style={styles.activityName}>Fruits Oats Bowl</Text>
+                <Text style={styles.reps}>1 serving</Text>
               </View>
               <View style={styles.scheduleItem}>
-              <Icon name='radio-button-unchecked' iconStyle={{position:'absolute', left:10, top:12}} />
-                <Text style={styles.activityName}>Overhead Squats - 16</Text>
-                <Text style={styles.reps}>3 Reps</Text>
+              <Icon name='radio-button-unchecked' containerStyle={{position:'absolute', left:10, top:12}} />
+                <Text style={styles.activityName}>Dry Fruits</Text>
+                <Text style={styles.reps}>1 serving</Text>
               </View>
               <View style={styles.scheduleItem}>
-              <Icon name='radio-button-unchecked' iconStyle={{position:'absolute', left:10, top:12}}/>
-                <Text style={styles.activityName}>Half Crunches - 12</Text>
-                <Text style={styles.reps}>3 Reps</Text>
+              <Icon name='radio-button-unchecked' containerStyle={{position:'absolute', left:10, top:12}}/>
+                <Text style={styles.activityName}>1 Chapati, Veg Curry</Text>
+                <Text style={styles.reps}>1 serving</Text>
               </View >
               <View style={styles.scheduleItem}>
-                <Icon name='radio-button-unchecked' iconStyle={{position:'absolute', left:10, top:12}} />
+                <Icon name='radio-button-unchecked' containerStyle={{position:'absolute', left:10, top:12}} />
                 <Text style={styles.activityName}>Flutter Kicks - 20</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View>
@@ -167,22 +274,22 @@ componentDidMount(){
             </Text>
             <View>
               <View style={styles.scheduleItem}>
-              <Icon name='check-circle' iconStyle={{position:'absolute', left:10, top:12}}/>
+              <Icon name='check-circle' containerStyle={{position:'absolute', left:10, top:12}}/>
                 <Text style={styles.activityName}>Push Up Burpees - 12</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View>
               <View style={styles.scheduleItem}>
-              <Icon name='check-circle' iconStyle={{position:'absolute', left:10, top:12}} />
+              <Icon name='check-circle' containerStyle={{position:'absolute', left:10, top:12}} />
                 <Text style={styles.activityName}>Overhead Squats - 16</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View>
               <View style={styles.scheduleItem}>
-              <Icon name='check-circle' iconStyle={{position:'absolute', left:10, top:12}}/>
+              <Icon name='check-circle' containerStyle={{position:'absolute', left:10, top:12}}/>
                 <Text style={styles.activityName}>Half Crunches - 12</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View >
               <View style={styles.scheduleItem}>
-                <Icon name='check-circle' iconStyle={{position:'absolute', left:10, top:12}} />
+                <Icon name='check-circle' containerStyle={{position:'absolute', left:10, top:12}} />
                 <Text style={styles.activityName}>Flutter Kicks - 20</Text>
                 <Text style={styles.reps}>3 Reps</Text>
               </View>
@@ -191,12 +298,46 @@ componentDidMount(){
       )
     }
   }
+  addBooking(){
+    axios.get(CONFIG.base_url +'fitnessCenters/'+ this.state.fitnessCenter)
+    .then((response) => {
+        console.log(response)
+        this.setState({fitnessCenterData:response.data})
+        var booking = {
+          date: this.state.bookingDate,
+          timeSlot: this.state.bookingTime,
+          fitnessCenter: response.data
+        }    
+        if(!booking.date || !booking.timeSlot || !booking.fitnessCenter){
+          alert("Please select date, time and fitness center.")
+        }
+        else{
+          axios.post(CONFIG.base_url + 'members/' + this.state.user.id + '/addAppointments', booking)
+            .then((response) => {
+              if(response.data.error=='OK'){
+                alert(response.data.message)
+              }
+              else{
+                 alert("Appointment confirmed.")
+                this.getTodaysAppointment(this.state.user.id)
+              }  
+            })
+            .catch((error) => {
+                alert(error)
+            })
+        }
+    })
+    .catch((error) => {
+        console.log(error)
+        alert(error)
+    })
+
+  }
 
   render() {
     const { navigate } = this.props.navigation;
-    if(this.state.user){
+    if(this.state.user && this.state.endDate){
       return (
-    
         <View style={styles.container}>
             <Icon raised reverse name='add' color='#E62221'
               containerStyle={{
@@ -221,11 +362,12 @@ componentDidMount(){
                     <View>
                       <Text style={styles.ModalHead}>Book Your Class</Text>
                     </View>
+                    <View style={styles.modalBox}>
                     <Text style={styles.label}>Select Booking Slot</Text>
                     <Picker
                       selectedValue={this.state.bookingTime}
-                      style={{width: width-80, marginLeft:20, marginTop:20}}
-                      onValueChange={(itemValue, itemIndex) => this.setState({bookingTime: itemValue})}>
+                      style={styles.inputStyle}
+                      onValueChange={(itemValue) => this.setState({bookingTime: itemValue})}>
                       <Picker.Item label="09:30 AM" value="09:30 AM" />
                       <Picker.Item label="10:00 AM" value="10:00 AM" />
                       <Picker.Item label="10:30 AM" value="10:30 AM" />
@@ -248,25 +390,41 @@ componentDidMount(){
                     </Picker>
                     <Text style={styles.label}>Select Booking Date</Text>
                     <DatePicker
-                      style={{width: width-160, marginLeft:60, marginTop:20}}
-                      date={this.state.date}
+                     style={styles.inputStyleDate}
+                      date={this.state.bookingDate}
+                      underlayColor="transparent"
                       mode="date"
                       placeholder="select date"
                       format="YYYY-MM-DD"
                       minDate={new Date()}
+                      maxDate={this.state.endDate}
                       confirmBtnText="Confirm"
                       cancelBtnText="Cancel"
                       showIcon={false}
                       customStyles={{
                         dateInput: {
-                          borderWidth:2,
-                          borderRadius:50,
-                          borderColor:'#b3b3b3'
+                          borderWidth:0,
+                          paddingLeft:6,
+                          marginTop:6,
+                          paddingTop:0,
+                        },
+                        dateText:{
+                          fontSize:14,
+                          alignSelf: 'flex-start',
+                          alignContent: 'flex-start',
+                        },
+                        placeholderText:{
+                          fontSize:14,
+                          alignSelf: 'flex-start',
+                          alignContent: 'flex-start',
                         }
                       }}
-                        onDateChange={(date) => {this.setState({date: date})}}>
+                      onDateChange={(date) => {this.setState({bookingDate: date})}}>
                     </DatePicker>
-                    <TouchableHighlight onPress={() =>this.setBookingModalVisible(!this.state.bookingModalVisible)} underlayColor="transparent">
+                    <Text style={styles.label}>Select Center</Text>
+                      {this.renderFitnessCenter()}
+                    </View>
+                    <TouchableHighlight onPress={() =>this.addBooking(!this.state.bookingModalVisible)} underlayColor="transparent">
                         <View style={styles.book}>
                           <Text style={styles.bookText}>Book Now</Text>
                         </View>
@@ -310,12 +468,16 @@ componentDidMount(){
                 }}
                 selectedButtonStyle={{borderBottomColor:'#E62221', borderBottomWidth:2}} />
               <ScrollView>
+                  {this.renderTodaysAppointment()}
                  {this.RenderPlan(this.state.index)}
               </ScrollView>
           </View>
         </View>
       );
     }
+    return(
+      <View></View>
+    )
     
   }
 }
@@ -327,6 +489,28 @@ const styles = StyleSheet.create({
   },
   innerContainer:{
     justifyContent: 'center'
+  },
+  inputStyle:{
+    width:width-80,
+    height:50,
+    paddingLeft: 5,
+    borderBottomColor:'#E62221',
+    borderBottomWidth: 1,
+    padding:10
+  },
+  label:{
+    color:'#E62221',
+    marginTop: 25,
+  },
+  inputStyleDate:{
+    width:width-80,
+    height:50,
+    borderBottomColor:'#E62221',
+    borderBottomWidth: 1,
+  },
+  modalBox:{
+    width:width-80,
+    padding:20
   },
   statBox:{
     width: width-40,
@@ -342,6 +526,10 @@ const styles = StyleSheet.create({
     width: undefined,
     height: undefined,
     borderRadius:7
+  },
+  schedule:{
+    marginBottom: 50,
+    paddingBottom: 50
   },
   scheduleItem:{
     width:width-40,
@@ -402,20 +590,51 @@ const styles = StyleSheet.create({
   },
   headDesign:{
     width:width,
-    height:160
-  },
-  label:{
-    width: width-40,
-    marginTop:20,
-    textAlign:'center',
-    alignSelf:'center',
-    fontSize:14
+    height:120
   },
   welcomeName:{
     fontSize:26,
     fontWeight: 'bold',
     color:'white',
     margin:30,
+  },
+  appointmentBox:{
+    width:width-40,
+    margin:20,
+    marginTop:10,
+    marginBottom:10,
+    borderRadius:10,
+    padding:10
+  },
+  appDate:{
+    fontSize:20,
+    color:'white'
+  },
+  appTime:{
+    fontSize:16,
+    color:'white',
+    marginTop:10
+  },
+  appLocation:{
+    fontSize:16,
+    color:'white'
+  },
+  submitButton:{
+    position:'absolute',
+    backgroundColor:'white',
+    right:0,
+    bottom:0,
+    borderRadius:5,
+    padding:10,
+    paddingTop: 5,
+    paddingBottom: 5
+  },
+  submitText:{
+    fontSize:14
+  },
+  delAppointment:{
+    position:'absolute',
+    top:10,
+    right:10
   }
-
 });

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar, FormLabel, FormInput, Icon, SocialIcon } from 'react-native-elements';
-import { LoginButton, AccessToken } from 'react-native-fbsdk';
+// import { LoginButton, AccessToken } from 'react-native-fbsdk';
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
 import {
@@ -8,10 +8,11 @@ import {
     Text,
     View,
     Dimensions,
-    TextInput
+    TextInput,
+    AsyncStorage
 } from 'react-native';
 var width = Dimensions.get('window').width;
-var base_url = "http://192.168.0.4:8080/"
+import CONFIG from '../config/config'
 export default class ConnectEmailScreen extends Component {
     constructor(props) {
         super(props);
@@ -23,6 +24,54 @@ export default class ConnectEmailScreen extends Component {
         title: 'Signup',
         header: null
     };
+     async saveItem(item, selectedValue) {
+    try {
+        await AsyncStorage.setItem(item, selectedValue);
+    } catch (error) {
+        alert("AsyncStorage error")
+        console.error('AsyncStorage error: ' + error.message);
+    }
+    }
+
+    // initUser(token) {
+    //     axios.get('https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' + token)
+    //     .then((response) => {
+    //         const { navigate } = this.props.navigation;
+    //         var tempMember = this.state.member;
+    //         tempMember.email = respponse.data.email;
+    //         tempMember.password = "master";
+    //         tempMember.phone = "";
+    //         tempMember.designation = "Member"
+    //         axios.post(CONFIG.base_url + 'signup', tempMember)
+    //           .then((response) => {
+    //               if(response.data.error=="OK"){
+    //                   alert(response.data.message)
+    //               }
+    //               else {
+    //                 var member = JSON.stringify(response.data);
+    //                 this.saveItem('member', member)
+    //                 if(response.data.designation=='Member'){
+    //                 const navigateAction = NavigationActions.navigate({
+    //                     routeName: 'Dashboard',
+    //                     params: {member: member},
+    //                     action: NavigationActions.navigate({
+    //                             routeName: 'Plan', params:{member:member}}),
+    //                     });
+    //                     this.props.navigation.dispatch(navigateAction);
+    //                 }
+    //                 else
+    //                 navigate("SuperAdminHome", {user: member})
+    //                 }
+    //           })
+    //           .catch((error) => {
+    //               alert("The email is already registerd. Please login with email to continue.")
+    //               navigate("Login")
+    //           }) 
+    //     })
+    //     .catch((error) => {
+    //         alert(JSON.stringify(error))
+    //     }) 
+    //   }
     signup(){
         const { navigate } = this.props.navigation;
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
@@ -44,20 +93,20 @@ export default class ConnectEmailScreen extends Component {
             tempMember.password = this.state.password;
             tempMember.phone = this.state.phone;
             tempMember.designation = "Member"
-            axios.post(base_url + 'signup', tempMember)
+            axios.post(CONFIG.base_url + 'signup', tempMember)
               .then((response) => {
                   if(response.data.error=="OK"){
                       alert(response.data.message)
                   }
                   else {
                     var member = JSON.stringify(response.data);
-                    global.member = member;
+                    this.saveItem('member', member)
                     if(response.data.designation=='Member'){
                     const navigateAction = NavigationActions.navigate({
                         routeName: 'Dashboard',
                         params: {member: member},
                         action: NavigationActions.navigate({
-                                routeName: 'Plan', params:{member:member}}),
+                                routeName: 'Dashboard', params:{member:member}}),
                         });
                         this.props.navigation.dispatch(navigateAction);
                     }
@@ -88,8 +137,13 @@ export default class ConnectEmailScreen extends Component {
 
                     <Text style = { styles.subText }>Connect an email to your account so that you can experience &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; the personalized app across all your devices. </Text>
 
-                    <View style = { styles.facebook } >
-                        <LoginButton 
+                    <View>
+                    <SocialIcon
+                        title = 'Sign up with facebook'
+                        button type = 'facebook'
+                        style = { styles.facebook }
+                    /> 
+                        {/* <LoginButton 
                         readPermissions = {['public_profile', 'email'] }
                             onLoginFinished = {
                                 (error, result) => {
@@ -100,7 +154,7 @@ export default class ConnectEmailScreen extends Component {
                                     } else {
                                         AccessToken.getCurrentAccessToken().then(
                                             (data) => {
-                                                alert("Login successful")
+                                                this.initUser(data)
                                             }
                                         )
                                     }
@@ -108,7 +162,7 @@ export default class ConnectEmailScreen extends Component {
                             }
                             onLogoutFinished = {
                                 () => console.log("logout.") }
-                            /> 
+                            />  */}
                     </View>
 
                     <View style = {{

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar, SearchBar, ListItem, Icon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import GradientHeader from '../components/GradientHeader';
 import axios from 'axios';
 import {
   StyleSheet,
@@ -12,13 +11,14 @@ import {
   ActivityIndicator
 } from 'react-native';
 var width = Dimensions.get('window').width;
+import CONFIG from '../config/config'
 export default class SuperAdminExerciseHome extends Component {
     constructor(props) {
         super(props);
         this.state ={
           exerciseInput: ''
         }
-        axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/exercises')
+        axios.get(CONFIG.base_url + 'exercises?projection=flat')
         .then((response) => {
             this.setState({exerciseList:response.data._embedded.exercises})
         })
@@ -85,6 +85,7 @@ export default class SuperAdminExerciseHome extends Component {
                 leftIcon={{ name: 'av-timer'}}
                 titleStyle={{fontSize:14}}
                 subtitleStyle={{fontSize:12}}
+                onPress={() => navigate('SuperAdminViewExercise', {exercise: JSON.stringify(item)})}
               />
             ))
           }

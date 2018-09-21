@@ -7,17 +7,18 @@ import {
   View,
   Text,
   Image,
-  Modal
+  Modal,
+  AsyncStorage
 } from 'react-native';
 var width = Dimensions.get('window').width;
-var base_url = "http://192.168.0.4:8080/"
+import CONFIG from '../config/config'
 export default class StoreScreen extends Component {
     constructor(props) {
         super(props);
         this.state = { 
             modalVisible: false,
         }
-        axios.get(base_url + 'membershipTypes')
+        axios.get(CONFIG.base_url + 'membershipTypes')
             .then((response) => {
                 console.log(response)
                 this.setState({membershipTypes:response.data._embedded.membershipTypes})
@@ -27,6 +28,11 @@ export default class StoreScreen extends Component {
                 alert(error)
             })
     }
+    componentWillMount(){
+        AsyncStorage.getItem('member').then((member) => {
+          this.setState({user:JSON.parse(member)})
+        })
+      }
 
     setModalVisible(visible, days) {
         if(days==0){

@@ -2,26 +2,28 @@ import React, { Component } from 'react';
 import { Avatar, Icon, SocialIcon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import DatePicker from 'react-native-datepicker';
-import { Picker } from 'react-native-picker-dropdown'
+import { Picker } from 'react-native-picker-dropdown';
 import {
   StyleSheet,
   Text,
   View,
   Dimensions,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from 'react-native';
 import axios from 'axios';
 var width = Dimensions.get('window').width;
-var base_url = "http://192.168.0.4:8080/"
+import CONFIG from '../config/config'
 export default class MyTrainerScreen extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          user: JSON.parse(this.props.navigation.state.params.user)
       }     
   }
-  componentDidMount(){
-    axios.get(base_url + 'members/' + this.state.user.id)
+  componentWillMount(){
+    AsyncStorage.getItem('member').then((member) => {
+      var user  = JSON.parse(member)
+      axios.get(CONFIG.base_url + 'members/' + user.id)
       .then((response) => {
             axios.get(response.data._links.trainer.href)
               .then((response2) => {
@@ -34,101 +36,61 @@ export default class MyTrainerScreen extends Component {
       .catch((error) => {
         alert(error)
       })
+      this.setState({user:JSON.parse(member)})
+    })
   }
-    static navigationOptions = {
-        title: 'Trainer Details',
-        header:null
-      };
+  componentDidMount(){
+    
+  }
+  static navigationOptions = {
+    title: 'Trainer Details',
+    header:null
+  };
 
   renderTrainer(){
     if(this.state.trainer){
       return(
         <View style={styles.inputForm}>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-            <TextInput
+          <Text style={styles.label}>Name</Text>
+           <TextInput
                 maxLength={30}
-                style={styles.inputStyle1}
+                style={styles.inputStyle}
                 placeholder="Name"
                 value={this.state.trainer.name}
                 editable={false}
               />
-          </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
+            <Text style={styles.label}>Email</Text>
             <TextInput
                 maxLength={40}
                 keyboardType="email-address"
-                style={styles.inputStyle1}
+                style={styles.inputStyle}
                 placeholder="Email"
                 value={this.state.trainer.email}
                 editable={false}
               />
-          </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
+            <Text style={styles.label}>Gender</Text>
             <TextInput
                 maxLength={10}
-                keyboardType="phone-pad"
-                style={styles.inputStyle1}
+                style={styles.inputStyle}
                 placeholder="Gender"
                 value={this.state.trainer.gender}
                 editable={false}
               />
-          </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
+          <Text style={styles.label}>Mobile Number</Text>
             <TextInput
                 maxLength={10}
                 keyboardType="phone-pad"
-                style={styles.inputStyle1}
+                style={styles.inputStyle}
                 placeholder="Mobile number"
                 value={this.state.trainer.phone}
                 editable={false}
               />
           </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-              <DatePicker
-                    style={styles.inputStyle2}
-                    date={this.state.trainer.dob}
-                    mode="date"
-                    maxDate={new Date()}
-                    confirmBtnText="Confirm"
-                    placeholder="Select date of birth"
-                    cancelBtnText="Cancel"
-                    showIcon={false}
-                    customStyles={{
-                      dateInput: {
-                        borderWidth:0,
-                        paddingLeft:7,
-                        marginTop:0,
-                        paddingTop:0
-                      },
-                      dateText:{
-                        fontSize:12,
-                        alignSelf: 'flex-start',
-                        alignContent: 'flex-start',
-                      },
-                      placeholderText:{
-                        fontSize:12,
-                        alignSelf: 'flex-start',
-                        alignContent: 'flex-start',
-                      }
-                    }}
-                    disabled={true}>
-              </DatePicker>
-          </View>
-         </View>
       )
     }
     return(
-      <View style={{
-          width:width,
-          margin:30,
-          alignSelf:'center'
-        }}>
-          <Text>Trainer details not yet updated yet.</Text>
+      <View>
+          <Text style={styles.noTrainer}>Trainer not assigned yet.</Text>
       </View>
       
     )
@@ -167,25 +129,16 @@ const styles = StyleSheet.create({
     width:width,
     height:140
   },
-  inputContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#ededed',
+  inputStyle:{
+    width:width-80,
     height:40,
-    padding:5,
-    paddingTop: 8,
+    paddingLeft: 5,
+    borderBottomColor:'#E62221',
+    borderBottomWidth: 1,
+  },
+  label:{
+    color:'#E62221',
     marginTop: 15,
-  },
-  inputStyle: {
-    flex: 1,
-    fontSize:12
-  },
-  inputStyle1: {
-    flex: 1,
-    paddingLeft: 7,
-    fontSize:12
-  },
-  inputStyle2: {
-    marginTop: -6,
   },
   login:{
     width:width-60,
@@ -203,24 +156,24 @@ const styles = StyleSheet.create({
   },
   inputForm:{
     margin:20,
-    padding:10,
+    padding:20,
     paddingTop:0,
     width:width-40,
     backgroundColor:'white'
   },
-  inputText:{
+  noTrainer:{
+    textAlign:'center',
     width:width-80,
-    borderWidth:0,
-    borderBottomColor: '#E62221',
+    padding:20,
+    alignSelf: 'center'
+  },
+  inputStyleDOB:{
+    width:width-40,
+    height:40,
+    borderBottomColor:'#E62221',
     borderBottomWidth: 1,
-    marginTop: 5,
-    marginBottom: 5,
-    height:30
   },
-  inputLabel:{
-    marginTop: 20,
-  },
-    loader:{
-      marginTop:'100%',
-    }
+  loader:{
+    marginTop:'100%',
+  }
 });

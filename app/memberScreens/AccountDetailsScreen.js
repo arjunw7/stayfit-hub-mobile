@@ -2,37 +2,50 @@ import React, { Component } from 'react';
 import { Avatar, Icon, SocialIcon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import DatePicker from 'react-native-datepicker';
-import { Picker } from 'react-native-picker-dropdown'
+import { Picker } from 'react-native-picker-dropdown';
+import axios from 'axios';
+import CONFIG from '../config/config'
 import {
   StyleSheet,
   Text,
   View,
   Dimensions,
   TouchableHighlight,
-  TextInput
+  TextInput,
+  AsyncStorage,
+  ActivityIndicator,
+  ScrollView
 } from 'react-native';
-import axios from 'axios';
 var width = Dimensions.get('window').width;
-var base_url = "http://192.168.0.4:8080/"
 export default class AccountDetailsScreen extends Component {
   constructor(props) {
     super(props);
     this.state ={
-        user: JSON.parse(this.props.navigation.state.params.user)
     }
 }
+async saveItem(item, selectedValue) {
+  try {
+      await AsyncStorage.setItem(item, selectedValue);
+  } catch (error) {
+      alert("AsyncStorage error")
+      console.error('AsyncStorage error: ' + error.message);
+  }
+  }
   static navigationOptions = {
     title: 'Account Details',
     header:null
   };
-  
-  componentDidMount(){
-    axios.get(base_url + 'members/' + this.state.user.id)
-    .then((response) => {
-        this.setState({user:response.data})
-    })
-    .catch((error) => {
-        alert(error)
+  async saveItem(item, selectedValue) {
+    try {
+        await AsyncStorage.setItem(item, selectedValue);
+    } catch (error) {
+        alert("AsyncStorage error")
+        console.error('AsyncStorage error: ' + error.message);
+    }
+  }
+  componentWillMount(){
+    AsyncStorage.getItem('member').then((member) => {
+      this.setState({user:JSON.parse(member)})
     })
   }
   updateName(itemValue){
@@ -63,10 +76,11 @@ export default class AccountDetailsScreen extends Component {
     this.setState({user:tempMember})
   }
   updateMember(){
-    axios.put(base_url + 'members/' + this.state.user.id, this.state.user)
+    axios.put(CONFIG.base_url + 'members/' + this.state.user.id, this.state.user)
     .then((response) => {
-        axios.get(base_url + 'members/'+this.state.user.id)
+        axios.get(CONFIG.base_url + 'members/'+this.state.user.id)
         .then((response) => {
+            this.saveItem('member', JSON.stringify(response.data))
             this.setState({user:response.data})
             alert("Member details updated.")
         })
@@ -82,126 +96,128 @@ export default class AccountDetailsScreen extends Component {
   }
   render() {
     const { navigate } = this.props.navigation;
-    return (
-      <View style={styles.container}>
-        <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
-          <Avatar
-            size="small"
-            rounded
-            icon={{name: 'arrow-back'}}
-            onPress={() => navigate('Profile')}
-            containerStyle={{margin: 30}}
-          />
-          <Avatar
+    if(this.state.user){
+      return (
+        <View style={styles.container}>
+          <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+            <Avatar
+              size="small"
               rounded
-              title="AW"
-              overlayContainerStyle={{backgroundColor: 'transparent'}}
-              onPress={() => console.log("Works!")}
-              titleStyle={{color:'grey', fontSize:36}}
-              containerStyle={{marginTop:-60, width:70, height:70, alignSelf:'center', borderRadius:35, backgroundColor:'white'}}
+              icon={{name: 'arrow-back'}}
+              onPress={() => navigate('Profile')}
+              containerStyle={{margin: 30}}
             />
-            <Text style={{
-              color:'white',
-              alignSelf:'center',
-              fontSize:15,
-              marginTop:10,
-              fontWeight:'500'
-            }}>
-              Arjun Wadhwa
-            </Text>
-            <Text style={{
-              color:'white',
-              alignSelf:'center',
-              fontSize:12
-            }}>
-              arjun.wadhwa2018@gmail.com
-            </Text>
-        </LinearGradient>
-        <View style={styles.inputForm}>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-            <TextInput
-                maxLength={30}
-                style={styles.inputStyle1}
-                placeholder="Enter name"
-                value={this.state.user.name}
-                onChangeText={(name) => this.updateName(name)}
+            <Avatar
+                rounded
+                title="AW"
+                overlayContainerStyle={{backgroundColor: 'transparent'}}
+                onPress={() => console.log("Works!")}
+                titleStyle={{color:'grey', fontSize:36}}
+                containerStyle={{marginTop:-60, width:70, height:70, alignSelf:'center', borderRadius:35, backgroundColor:'white'}}
               />
-          </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-            <TextInput
-                maxLength={40}
-                keyboardType="email-address"
-                style={styles.inputStyle1}
-                placeholder="Enter email"
-                value={this.state.user.email}
-                onChangeText={(email) => this.updateEmail(email)}
-              />
-          </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-              <Picker
-                  selectedValue={this.state.user.gender}
+              <Text style={{
+                color:'white',
+                alignSelf:'center',
+                fontSize:15,
+                marginTop:10,
+                fontWeight:'500'
+              }}>
+                {this.state.user.name}
+              </Text>
+              <Text style={{
+                color:'white',
+                alignSelf:'center',
+                fontSize:12
+              }}>
+               {this.state.user.email}
+              </Text>
+          </LinearGradient>
+          <ScrollView>
+          <View style={styles.inputForm}>
+              <Text style={styles.label}>Name</Text>
+              <TextInput
+                  maxLength={30}
                   style={styles.inputStyle}
-                  placeholder="Select gender"
-                  onValueChange={(itemValue) => this.updateGender(itemValue)}>
-                  <Picker.Item label="Select gender" value="Select gender" />
-                  <Picker.Item label="Male" value="Male" />
-                  <Picker.Item label="Female" value="Female" />
-            </Picker>
-          </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-            <TextInput
-                maxLength={10}
-                keyboardType="phone-pad"
-                style={styles.inputStyle1}
-                placeholder="Enter mobile number"
-                value={this.state.user.phone}
-                onChangeText={(phone) => this.updatePhone(phone)}
-              />
-          </View>
-          <View style={styles.inputContainer}>
-              <Icon name='rename-box' type='material-community' color="#595959"/>
-              <DatePicker
-                    style={styles.inputStyle2}
-                    date={this.state.user.dob}
-                    mode="date"
-                    maxDate={new Date()}
-                    confirmBtnText="Confirm"
-                    placeholder="Select date of birth"
-                    cancelBtnText="Cancel"
-                    showIcon={false}
-                    customStyles={{
-                      dateInput: {
-                        borderWidth:0,
-                        paddingLeft:7,
-                        marginTop:0,
-                        paddingTop:0
-                      },
-                      dateText:{
-                        fontSize:12,
-                        alignSelf: 'flex-start',
-                        alignContent: 'flex-start',
-                      },
-                      placeholderText:{
-                        fontSize:12,
-                        alignSelf: 'flex-start',
-                        alignContent: 'flex-start',
-                      }
-                    }}
-                    onDateChange={(dob) => this.updateDob(dob)}>
-              </DatePicker>
-          </View>
-            <TouchableHighlight onPress={() => this.updateMember()} underlayColor="transparent">
-                <View style={styles.login}>
-                  <Text style={styles.loginText}>Update Details</Text>
-                </View>
-            </TouchableHighlight>
-         </View>
-      </View>
-    );
+                  placeholder="Enter name"
+                  value={this.state.user.name}
+                  onChangeText={(name) => this.updateName(name)}
+                />
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                    maxLength={40}
+                    keyboardType="email-address"
+                    style={styles.inputStyle}
+                    placeholder="Enter email"
+                    value={this.state.user.email}
+                    onChangeText={(email) => this.updateEmail(email)}
+                  />
+                  <Text style={styles.label}>Gender</Text>
+                  <Picker
+                      selectedValue={this.state.user.gender}
+                      style={styles.inputStyle}
+                      placeholder="Select gender"
+                      onValueChange={(itemValue) => this.updateGender(itemValue)}>
+                      <Picker.Item label="Select gender" value="Select gender" />
+                      <Picker.Item label="Male" value="Male" />
+                      <Picker.Item label="Female" value="Female" />
+                </Picker>
+                <Text style={styles.label}>Contact number</Text>
+                <TextInput
+                    maxLength={10}
+                    keyboardType="phone-pad"
+                    style={styles.inputStyle}
+                    placeholder="Enter mobile number"
+                    value={this.state.user.phone}
+                    onChangeText={(phone) => this.updatePhone(phone)}
+                  />
+                  <Text style={styles.label}>Date of birth</Text>
+                  <DatePicker
+                        style={styles.inputStyleDOB}
+                        date={this.state.user.dob}
+                        mode="date"
+                        maxDate={new Date()}
+                        confirmBtnText="Confirm"
+                        placeholder="Select date of birth"
+                        cancelBtnText="Cancel"
+                        showIcon={false}
+                        customStyles={{
+                          dateInput: {
+                            borderWidth:0,
+                            paddingLeft:6,
+                            marginTop:6,
+                            paddingTop:0
+                          },
+                          dateText:{
+                            fontSize:14,
+                            alignSelf: 'flex-start',
+                            alignContent: 'flex-start',
+                          },
+                          placeholderText:{
+                            fontSize:14,
+                            alignSelf: 'flex-start',
+                            alignContent: 'flex-start',
+                          }
+                        }}
+                        onDateChange={(dob) => this.updateDob(dob)}>
+                  </DatePicker>
+                <TouchableHighlight onPress={() => this.updateMember()} underlayColor="transparent">
+                    <View style={styles.login}>
+                      <Text style={styles.loginText}>Update Details</Text>
+                    </View>
+                </TouchableHighlight>
+           </View>
+           </ScrollView>
+        </View>
+      );
+    }
+    else{
+      return(
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      )
+    }
+   
   }
 }
 
@@ -214,25 +230,18 @@ const styles = StyleSheet.create({
     width:width,
     height:160
   },
-  inputContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#ededed',
+  inputStyle:{
+    width:width-40,
     height:40,
-    padding:5,
-    paddingTop: 8,
-    marginTop: 15,
+    paddingLeft: 5,
+    borderBottomColor:'#E62221',
+    borderBottomWidth: 1,
   },
-  inputStyle: {
-    flex: 1,
-    fontSize:12
-  },
-  inputStyle1: {
-    flex: 1,
-    paddingLeft: 7,
-    fontSize:12
-  },
-  inputStyle2: {
-    marginTop: -6,
+  inputStyleDOB:{
+    width:width-40,
+    height:40,
+    borderBottomColor:'#E62221',
+    borderBottomWidth: 1,
   },
   login:{
     width:width-60,
@@ -255,20 +264,12 @@ const styles = StyleSheet.create({
     width:width-40,
     backgroundColor:'white'
   },
-  inputText:{
-    width:width-80,
-    borderWidth:0,
-    borderBottomColor: '#E62221',
-    borderBottomWidth: 1,
-    marginTop: 5,
-    marginBottom: 5,
-    height:30
+  loader:{
+    marginTop:'100%',
   },
-  inputLabel:{
-    marginTop: 20,
-  },
-    loader:{
-      marginTop:'100%',
-    }
+  label:{
+    color:'#E62221',
+    marginTop: 15,
+  }
 
 });

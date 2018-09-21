@@ -10,6 +10,7 @@ import {
   ScrollView
 } from 'react-native';
 var width = Dimensions.get('window').width;
+import CONFIG from '../config/config'
 export default class SuperAdminMealHome extends Component {
     constructor(props) {
         super(props);

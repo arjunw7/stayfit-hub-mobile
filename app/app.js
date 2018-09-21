@@ -36,7 +36,10 @@ import SuperAdminExerciseHome from './superadminScreens/SuperAdminExerciseHome'
 import SuperAdminWorkoutHome from './superadminScreens/SuperAdminWorkoutHome'
 import SuperAdminMealHome from './superadminScreens/SuperAdminMealHome'
 import SuperAdminDietHome from './superadminScreens/SuperAdminDietHome'
+import SuperAdminWorkoutAssignment from './superadminScreens/SuperAdminWorkoutAssignment'
+import AttendanceScanner from './memberScreens/AttendanceScanner';
 
+import SplashScreen from 'react-native-splash-screen'
 import {
   StackNavigator,
 } from 'react-navigation';
@@ -55,6 +58,7 @@ const Router = StackNavigator({
     FAQ: {screen:FAQscreen},
     MyTrainer: {screen: MyTrainerScreen},
     Support: {screen: SupportScreen},
+    AttendanceScanner: {screen: AttendanceScanner},
     Dashboard: { screen: MemberTabNavigation,
         navigationOptions: ({ navigation }) => ({
         header:null
@@ -81,11 +85,15 @@ const Router = StackNavigator({
     SuperAdminExerciseHome: { screen: SuperAdminExerciseHome},
     SuperAdminWorkoutHome: { screen: SuperAdminWorkoutHome},
     SuperAdminMealHome: { screen: SuperAdminMealHome},
-    SuperAdminDietHome: { screen: SuperAdminDietHome}
+    SuperAdminDietHome: { screen: SuperAdminDietHome},
+    SuperAdminWorkoutAssignment: { screen: SuperAdminWorkoutAssignment}
   }
 );
 
 export default class App extends Component{
+  componentDidMount() {
+      SplashScreen.hide();
+  }
   render() {
       return <Router />;   
   }

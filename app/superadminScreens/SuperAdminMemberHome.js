@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar, SearchBar, ListItem, Icon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import GradientHeader from '../components/GradientHeader';
 import axios from 'axios';
 import {
   StyleSheet,
@@ -12,14 +11,14 @@ import {
   ActivityIndicator
 } from 'react-native';
 var width = Dimensions.get('window').width;
+import CONFIG from '../config/config'
 export default class SuperAdminMemberHome extends Component {
     constructor(props) {
         super(props);
         this.state ={
           memberInput:''
         }
-       
-        axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/members')
+        axios.get(CONFIG.base_url + 'members')
         .then((response) => {
             this.setState({members:response.data._embedded.members})
         })
@@ -41,7 +40,21 @@ export default class SuperAdminMemberHome extends Component {
     if(this.state.members){
       return (
         <View style={styles.container}>
-        <GradientHeader title="Members" navigation={this.props.navigation}/>
+        <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+          <Avatar
+            size="small"
+            rounded
+            icon={{name: 'arrow-back'}}
+            onPress={() => navigate('SuperAdminHome')}
+            containerStyle={{margin: 30}}
+          />
+          <Text style={{
+            fontSize:24,
+            color:'white',
+            marginLeft:30,
+            marginTop:-10
+          }}>Members</Text>
+        </LinearGradient>
        <Icon raised reverse name='add' color='#E62221'
             containerStyle={{
               position:'absolute', 

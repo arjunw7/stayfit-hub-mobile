@@ -6,16 +6,34 @@ import {
     Text,
     View,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    AsyncStorage,
+    ActivityIndicator
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
+import CONFIG from '../config/config'
 import LinearGradient from 'react-native-linear-gradient';
 var width = Dimensions.get('window').width;
 export default class SuperAdminHome extends Component {
   constructor(props) {
     super(props);
     this.state ={
-        
     }
+}
+async userLogout() {
+  const { navigate } = this.props.navigation;
+    try {
+      await AsyncStorage.removeItem('member');
+      Alert.alert('Logout Success!');
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
+    }
+    navigate("Home")
+  }
+componentWillMount(){
+  AsyncStorage.getItem('member').then((member) => {
+    this.setState({user:JSON.parse(member)})
+  })
 }
 static navigationOptions = {
     title: 'Dashboard',
@@ -23,121 +41,137 @@ static navigationOptions = {
 }
   render() {
     const { navigate } = this.props.navigation;
-    return (
-      <View style={styles.container}>
-          <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
-                <Avatar
-                rounded
-                icon={{name: 'power', type: 'feather'}}
-                onPress={() => navigate('Home')}
-                containerStyle={{margin: 30}}
-              />
-              <Avatar
+    if(this.state.user){
+      return (
+        <View style={styles.container}>
+            <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+                  <Avatar
                   rounded
-                  title="AW"
-                  overlayContainerStyle={{backgroundColor: 'transparent'}}
-                  onPress={() => console.log("Works!")}
-                  titleStyle={{color:'grey', fontSize:36}}
-                  containerStyle={{marginTop:-60, width:70, height:70, alignSelf:'center', borderRadius:35, backgroundColor:'white'}}
+                  icon={{name: 'ios-power', type: 'ionicon'}}
+                  onPress={() => this.userLogout()}
+                  containerStyle={{margin: 30}}
                 />
-                <Text style={{
-                  color:'white',
-                  alignSelf:'center',
-                  fontSize:15,
-                  marginTop:10,
-                  fontWeight:'500'
-                }}>
-                  Arjun Wadhwa
-                </Text>
-                <Text style={{
-                  color:'white',
-                  alignSelf:'center',
-                  fontSize:12
-                }}>
-                  arjun.wadhwa2018@gmail.com
-                </Text>
-            </LinearGradient>
-            <View style={styles.mainIcons}>
-              <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminMemberHome')}> 
-                <Icon
-                  name='user'
-                  type='font-awesome'
-                  color='#E62221'/>
-                  <Text style={styles.iconText}>Members</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminGymHome')}> 
-                <Icon
-                  name='office-building'
-                  type='material-community'
-                  color='#E62221'/>
-                  <Text style={styles.iconText}>Gyms</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminEmployeeHome', {employeeType: 'trainer'})}> 
-                <Icon
-                  name='verified'
-                  type='octicon'
-                  color='#E62221'/>
-                  <Text style={styles.iconText}>Trainers</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminEmployeeHome', {employeeType: 'headTrainer'})}> 
-                <Icon
-                  name='verified'
-                  type='material-community'
-                  color='#E62221'/>
-                  <Text style={styles.iconText}>Head Trainers</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminEmployeeHome', {employeeType: 'frontdesk'})}> 
-                <Icon
-                  name='support'
-                  type='font-awesome'
-                  color='#E62221'/>
-                  <Text style={styles.iconText}>Frontdesk</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminExerciseHome')}> 
-                <Icon
-                  name='dumbbell'
-                  type='material-community'
-                  color='#E62221'/>
-                  <Text style={styles.iconText}>Exercises</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminWorkoutHome')}> 
-                <Icon
-                  name='paper-plane'
-                  type='entypo'
-                  color='#E62221'/>
-                  <Text style={styles.iconText}>Workouts</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminMealHome')}> 
-                <Icon
-                  name='food-variant'
-                  type='material-community'
-                  color='#E62221'/>
-                  <Text style={styles.iconText}>Meals</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminDietHome')}> 
-                <Icon
-                  name='food-apple'
-                  type='material-community'
-                  color='#E62221'/>
-                  <Text style={styles.iconText}>Diets</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.mainIcon1}> 
-                <Icon
-                  name='rupee'
-                  type='font-awesome'
-                  color='#E62221'/>
-                  <Text style={styles.iconText}>Payments</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.mainIcon1}> 
-                <Icon
-                  name='md-stats'
-                  type='ionicon'
-                  color='#E62221'/>
-                  <Text style={styles.iconText}>Stats</Text>
-              </TouchableOpacity>
-            </View>
-      </View>
-    );
+                <Avatar
+                    rounded
+                    title="AW"
+                    overlayContainerStyle={{backgroundColor: 'transparent'}}
+                    titleStyle={{color:'grey', fontSize:36}}
+                    containerStyle={{marginTop:-60, width:70, height:70, alignSelf:'center', borderRadius:35, backgroundColor:'white'}}
+                  />
+                  <Text style={{
+                    color:'white',
+                    alignSelf:'center',
+                    fontSize:15,
+                    marginTop:10,
+                    fontWeight:'500'
+                  }}>
+                    {this.state.user.name}
+                  </Text>
+                  <Text style={{
+                    color:'white',
+                    alignSelf:'center',
+                    fontSize:12
+                  }}>
+                    {this.state.user.email}
+                  </Text>
+              </LinearGradient>
+              <View style={styles.mainIcons}>
+                <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminMemberHome')}> 
+                  <Icon
+                    name='user'
+                    type='font-awesome'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Members</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminGymHome')}> 
+                  <Icon
+                    name='building'
+                    type='font-awesome'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Gyms</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminEmployeeHome', {employeeType: 'trainer'})}> 
+                  <Icon
+                    name='user-secret'
+                    type='font-awesome'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Trainers</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminEmployeeHome', {employeeType: 'headTrainer'})}> 
+                  <Icon
+                    name='verified'
+                    type='material-community'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Head Trainers</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminEmployeeHome', {employeeType: 'frontdesk'})}> 
+                  <Icon
+                    name='support'
+                    type='font-awesome'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Frontdesk</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminExerciseHome')}> 
+                  <Icon
+                    name='dumbbell'
+                    type='material-community'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Exercises</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminWorkoutHome')}> 
+                  <Icon
+                    name='paper-plane'
+                    type='entypo'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Workouts</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminWorkoutAssignment')}> 
+                  <Icon
+                    name='assignment'
+                    type='material-icons'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Workout Assignment</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.mainIcon1} onPress={() => navigate('SuperAdminMealHome')}> 
+                  <Icon
+                    name='food-variant'
+                    type='material-community'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Meals</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.mainIcon1} onPress={() => navigate('SuperAdminHome')}> 
+                  <Icon
+                    name='food-apple'
+                    type='material-community'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Diets</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.mainIcon1}> 
+                  <Icon
+                    name='rupee'
+                    type='font-awesome'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Payments</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.mainIcon1}> 
+                  <Icon
+                    name='md-stats'
+                    type='ionicon'
+                    color='#E62221'/>
+                    <Text style={styles.iconText}>Stats</Text>
+                </TouchableOpacity>
+              </View>
+        </View>
+      );
+    }
+    else{
+      return(
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      )
+    }
+    
   } 
 }
 
@@ -185,6 +219,10 @@ const styles = StyleSheet.create({
     color:'#E62221',
     alignSelf:'center',
     alignItems:'center',
-    marginTop:10
-  }
+    marginTop:10,
+    textAlign:'center'
+  },
+  loader:{
+    marginTop:'100%',
+  }, 
 });

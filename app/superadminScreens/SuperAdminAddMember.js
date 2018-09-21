@@ -16,6 +16,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 var width = Dimensions.get('window').width;
+import CONFIG from '../config/config'
 export default class SuperAdminAddMember extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +29,7 @@ export default class SuperAdminAddMember extends Component {
         fitnessCenter: '',
         trainer: ''
   }
-  axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/trainers')
+  axios.get(CONFIG.base_url +'trainers')
     .then((response) => {
         console.log(response)
         this.setState({trainersList:response.data._embedded.trainers})
@@ -37,7 +38,7 @@ export default class SuperAdminAddMember extends Component {
         console.log(error)
         alert(error)
     })
-  axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/fitnessCenters')
+  axios.get(CONFIG.base_url + 'fitnessCenters')
   .then((response) => {
     console.log(response)
     this.setState({fitnessCentersList:response.data._embedded.fitnessCenters})
@@ -52,48 +53,80 @@ static navigationOptions = {
     header: null
 }
 addMember(){
-  axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/trainers/'+this.state.trainer)
-    .then((response) => {
-        axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/fitnessCenters/'+this.state.fitnessCenter)
-        .then((response1) => {
-            var member = {
-              name: this.state.name,
-              email: this.state.email,
-              gender: this.state.gender,
-              phone: this.state.phone,
-              dob: this.state.dob,
-              trainer: response.data,
-              fitnessCenter: response1.data,
-              password: "master",
-              designation:"member"
-            }
-            console.log("******************")
-            console.log(member)
-              axios.post('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/members', member)
+  var member = {
+    name: this.state.name,
+    email: this.state.email,
+    gender: this.state.gender,
+    phone: this.state.phone,
+    dob: this.state.dob,
+    password: "master",
+    designation:"member"
+  }
+  axios.post(CONFIG.base_url + 'members', member)
+  .then((response) => {
+    axios.get(CONFIG.base_url + 'members/'+response.data.id)
+      .then((response1) => {
+          var trainer = response1.data._links.trainer.href;
+          var fitnessCenter = response1.data._links.fitnessCenter.href;
+          axios({ 
+            method: 'PUT', 
+            url: trainer,
+            headers: {
+              "Content-Type": "text/uri-list"},
+            data: CONFIG.base_url+'trainers/'+this.state.trainer
+           })
+          .then((response2) => {
+              axios({ 
+                method: 'PUT', 
+                url: fitnessCenter,
+                headers: {
+                  "Content-Type": "text/uri-list"},
+                data: CONFIG.base_url+'fitnessCenter/'+this.state.fitnessCenter
+              })
               .then((response2) => {
-                  alert("Member added successfully.")
+                alert("Member added successfully!")
               })
               .catch((error) => {
                   console.log(error)
-                  alert(error)
+                  alert(JSON.stringify(error))
               })
-        })
-        .catch((error) => {
-            console.log(error)
-            alert(error)
-        })
-    })
-    .catch((error) => {
-        console.log(error)
-        alert(error)
-    })
+          })
+          .catch((error) => {
+              console.log(error)
+              alert(JSON.stringify(error))
+          })
+
+      })
+      .catch((error) => {
+          console.log(error)
+          alert(error)
+      })
+  })
+  .catch((error) => {
+      console.log(error)
+      alert(error.cause.cause.cause)
+  })
 }
   render() {
     const { navigate } = this.props.navigation;
     if(this.state.trainersList && this.state.fitnessCentersList){
       return (
         <View style={styles.container}>
-           <GradientHeader title="Add Member" navigation={this.props.navigation}/>
+           <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+          <Avatar
+            size="small"
+            rounded
+            icon={{name: 'arrow-back'}}
+            onPress={() => navigate('SuperAdminMemberHome')}
+            containerStyle={{margin: 30}}
+          />
+          <Text style={{
+            fontSize:24,
+            color:'white',
+            marginLeft:30,
+            marginTop:-10
+          }}>Add Member</Text>
+        </LinearGradient>
            <ScrollView>
            <View style={styles.inputForm}>
             <View style={styles.inputContainer}>
@@ -154,17 +187,17 @@ addMember(){
                       customStyles={{
                         dateInput: {
                           borderWidth:0,
-                          paddingLeft:7,
-                          marginTop:0,
+                          paddingLeft:12,
+                          marginTop:6,
                           paddingTop:0
                         },
                         dateText:{
-                          fontSize:12,
+                          fontSize:16,
                           alignSelf: 'flex-start',
                           alignContent: 'flex-start',
                         },
                         placeholderText:{
-                          fontSize:12,
+                          fontSize:16,
                           alignSelf: 'flex-start',
                           alignContent: 'flex-start',
                         }
@@ -233,18 +266,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#ededed',
     height:40,
-    padding:5,
-    paddingTop: 8,
+    paddingLeft:5,
     marginTop: 15,
   },
   inputStyle: {
     flex: 1,
-    fontSize:12
+    fontSize:16,
+    height:40,
+    marginTop: -5,
   },
   inputStyle1: {
     flex: 1,
-    paddingLeft: 7,
-    fontSize:12
+    paddingLeft: 12,
+    fontSize:16,
   },
   inputStyle2: {
     marginTop: -6,
@@ -284,6 +318,10 @@ const styles = StyleSheet.create({
   },
   loader:{
     marginTop:'100%',
-  }
+  },
+  headDesign:{
+    width:width,
+    height:140
+  },
 
 });

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar, Icon, SocialIcon } from 'react-native-elements';
-import GradientHeader from '../components/GradientHeader'
+import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import {
   StyleSheet,
@@ -12,6 +12,8 @@ import {
   TouchableHighlight
 } from 'react-native';
 var width = Dimensions.get('window').width;
+import CONFIG from '../config/config'
+
 export default class SuperAdminAddGym extends Component {
   constructor(props) {
     super(props);
@@ -28,20 +30,39 @@ export default class SuperAdminAddGym extends Component {
       location:this.state.location,
       address: this.state.address
     }
-    axios.post('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/fitnessCenter/', fitnessCenter)
-    .then((response) => {
-        alert("Fitness center added successfully.")
-    })
-    .catch((error) => {
-        console.log(error)
-        alert(error)
-    })
+    if(!this.state.name || !this.state.location || !this.state.address){
+      alert("Please enter all the details.")
+    }
+    else{
+      axios.post(CONFIG.base_url + 'fitnessCenters', fitnessCenter)
+      .then((response) => {
+          alert("Fitness center added successfully.")
+      })
+      .catch((error) => {
+          console.log(error)
+          alert(error)
+      })
+    }
   }
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <GradientHeader title="Fitness Center Details" navigation={this.props.navigation}/>
+        <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+          <Avatar
+            size="small"
+            rounded
+            icon={{name: 'arrow-back'}}
+            onPress={() => navigate('SuperAdminHome')}
+            containerStyle={{margin: 30}}
+          />
+          <Text style={{
+            fontSize:24,
+            color:'white',
+            marginLeft:30,
+            marginTop:-10
+          }}>Add Fitness Center</Text>
+        </LinearGradient>
         <ScrollView>  
           <View style={styles.inputForm}>
           <View style={styles.inputContainer}>
@@ -88,22 +109,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5FCFF',
   },
+  headDesign:{
+    width:width,
+    height:140
+  },
   inputContainer: {
     flexDirection: 'row',
     backgroundColor: '#ededed',
     height:40,
-    padding:5,
-    paddingTop: 8,
+    paddingLeft:5,
     marginTop: 15,
   },
   inputStyle: {
     flex: 1,
-    fontSize:12
+    fontSize:16,
+    height:40,
+    marginTop: -5,
   },
   inputStyle1: {
     flex: 1,
-    paddingLeft: 7,
-    fontSize:12
+    paddingLeft: 12,
+    fontSize:16,
   },
   inputStyle2: {
     marginTop: -6,

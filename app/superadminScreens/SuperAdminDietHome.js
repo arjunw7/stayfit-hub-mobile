@@ -9,6 +9,7 @@ import {
   Dimensions,
   ScrollView
 } from 'react-native';
+import CONFIG from '../config/config'
 var width = Dimensions.get('window').width;
 export default class SuperAdminDietHome extends Component {
     constructor(props) {
@@ -18,7 +19,7 @@ export default class SuperAdminDietHome extends Component {
         }
         axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/diets')
         .then((response) => {
-            this.setState({members:response.data._embedded.members})
+            this.setState({dietList:response.data._embedded.diets})
         })
         .catch((error) => {
             alert(error)

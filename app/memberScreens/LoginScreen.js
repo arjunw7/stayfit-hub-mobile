@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Avatar, FormLabel, FormInput, Icon, SocialIcon } from 'react-native-elements';
-import { LoginButton, AccessToken } from 'react-native-fbsdk';
+//import { LoginButton, AccessToken } from 'react-native-fbsdk';
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
 
-var base_url = "http://192.168.0.4:8080/"
+import CONFIG from '../config/config'
 import {
     StyleSheet,
     Text,
@@ -28,38 +28,41 @@ export default class LoginScreen extends Component {
         title: 'Login',
         header: null
     }
+    async saveItem(item, selectedValue) {
+        try {
+            await AsyncStorage.setItem(item, selectedValue);
+        } catch (error) {
+            alert("AsyncStorage error")
+            console.error('AsyncStorage error: ' + error.message);
+        }
+    }
 
-    initUser(token) {
-        fetch('https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' + token)
-        .then((response) => response.json())
-        .then((json) => {
-            console.loh("**********************")
-            console.log(json)
-            console.loh("**********************")
-            const { navigate } = this.props.navigation;
-            // var login = {
-            //     username: this.state.email,
-            //     password:this.state.password
-            // }
-            // axios.post('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/login/', login)
-            // .then((response) => {
-            //     var user = JSON.stringify(response.data)
-            //     if(response.data.designation=='Member'){
-            //         this.props.navigation("Dashboard", {user: user})
-            //     }
-            //     else
-            //     this.props.navigation("SuperAdminHome", {user: user})
-                
-            // })
-            // .catch((error) => {
-            //     console.log(error)
-            //     alert(error)
-            // })  
-        })
-        .catch(() => {
-          reject('ERROR GETTING DATA FROM FACEBOOK')
-        })
-      }
+    // initUser(token) {
+    //     axios.get('https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' + token)
+    //     .then((response) => {
+    //         const { navigate } = this.props.navigation;
+    //         var login = {
+    //             username: response.data.email,
+    //             password: "master"
+    //         }
+    //         axios.post(CONFIG.base_url + 'login/', login)
+    //         .then((response) => {
+    //             var user = JSON.stringify(response.data)
+    //             if(response.data.designation=='Member'){
+    //                 this.props.navigation("Dashboard", {user: user})
+    //             }
+    //             else
+    //             this.props.navigation("SuperAdminHome", {user: user})
+    //         })
+    //         .catch((error) => {
+    //             console.log(error)
+    //             alert(error)
+    //         })  
+    //     })
+    //     .catch((error) => {
+    //         alert(JSON.stringify(error))
+    //     }) 
+    //   }
       showLoader(){
           if(this.state.showLoader){
               return(
@@ -86,7 +89,7 @@ export default class LoginScreen extends Component {
                 username: this.state.email,
                 password:this.state.password
             }
-            axios.post(base_url + 'login?email='+this.state.email+"&password="+this.state.password)
+            axios.post(CONFIG.base_url + 'login?email='+this.state.email+"&password="+this.state.password)
             .then((response) => {
                 if(response.data.error=="OK"){
                     alert("Incorrect login credentials.")
@@ -94,13 +97,14 @@ export default class LoginScreen extends Component {
                 }
                 else{
                     var member = JSON.stringify(response.data);
+                    this.saveItem('member', member)
                     global.member = member;
                     if(response.data.designation=='Member'){
                     const navigateAction = NavigationActions.navigate({
                         routeName: 'Dashboard',
                         params: {member: member},
                         action: NavigationActions.navigate({
-                                routeName: 'Plan', params:{member:member}}),
+                                routeName: 'Dashboard', params:{member:member}}),
                         });
                         this.props.navigation.dispatch(navigateAction);
                     }
@@ -131,8 +135,8 @@ export default class LoginScreen extends Component {
             <View style = { styles.innerContainer } >
             <Text style = { styles.mainText } > Welcome Back </Text> 
             <Text style = { styles.subText } > It 's good to see you again.</Text> 
-            <View style = { styles.facebook } >
-            <LoginButton readPermissions = {['public_profile', 'email'] }
+            <View>
+            {/* <LoginButton readPermissions = {['public_profile', 'email'] }
                 underlayColor="transparent"
                 onLoginFinished = {
                     (error, result) => {
@@ -154,7 +158,12 @@ export default class LoginScreen extends Component {
                 }
                 onLogoutFinished = {
                     () => console.log("logout.") }
-                /> 
+                />  */}
+                 <SocialIcon
+                        title = 'Log in with facebook'
+                        button type = 'facebook'
+                        style = { styles.facebook }
+                    /> 
             </View> 
             <View style = {{
                     borderBottomColor: '#e4e4e4',
@@ -305,7 +314,7 @@ const styles = StyleSheet.create({
         width:width,
         height:"100%",
         position:'absolute',
-        zIndex:2,
+        zIndex:100,
         backgroundColor:"rgba(0,0,0,0.7)",
         paddingTop:"100%"
       }

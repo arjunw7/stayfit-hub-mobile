@@ -6,9 +6,11 @@ import {
   View,
   TouchableHighlight,
   Dimensions,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from 'react-native';
 var width = Dimensions.get('window').width;
+import CONFIG from '../config/config'
 export default class MemberDetailsScreen extends Component {
   constructor(props) {
     super(props);
@@ -59,9 +61,7 @@ export default class MemberDetailsScreen extends Component {
         height: this.state.height,
         weight:this.state.weight
       }
-      console.log("__________________________")
       console.log(member)
-      console.log("__________________________")
       var memberString = JSON.stringify(member)
       navigate("ConnectEmail", {member: memberString})
     }

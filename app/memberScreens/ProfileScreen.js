@@ -5,8 +5,12 @@ import {
   View,
   Dimensions,
   TouchableHighlight,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator,
+  Alert
 } from 'react-native';
+import axios from 'axios';
+import CONFIG from '../config/config'
 var width = Dimensions.get('window').width;
 import { Avatar, Header, ListItem } from 'react-native-elements';
 
@@ -46,29 +50,30 @@ const list = [
     icon: 'message',
     route: 'Support',
     member: global.member
-  },
-  {
-    title: "Logout",
-    icon: 'rotate-right',
-    route: 'Home',
-    member: global.member
   }
 
 ]
 export default class ProfileScreen extends Component {
   constructor(props) {
-    super(props);
-    this.state ={
-        email:"arjunw7@gmail.com",
-        password:"13bcb0062", 
-        member:JSON.parse(global.member),
-        memberString: global.member
+        super(props);
+        this.state ={
+        }
     }
-    AsyncStorage.getItem('member').then((value) => this.setState({ 'memberID': value })).done();
+    async userLogout() {
+      try {
+        await AsyncStorage.removeItem('member');
+        const { navigate } = this.props.navigation;
+        navigate("Home")
+        
+      } catch (error) {
+        console.log('AsyncStorage error: ' + error.message);
+      }
+    }
+componentWillMount(){
+  AsyncStorage.getItem('member').then((member) => {
+    this.setState({member:JSON.parse(member)})
+  })
 }
-  componentDidMount(){
-     
-  }
   static navigationOptions = {
     title: 'Profile',
     header: null
@@ -76,42 +81,60 @@ export default class ProfileScreen extends Component {
   
   render() {
     const { navigate } = this.props.navigation;
-    return (
-      <View style={styles.container}>
-        <View style={styles.innerContainer}>
-            <View style={styles.profileHead}>
-              <Text style={{alignSelf:'flex-start', fontSize:14}}>{this.state.member.name}</Text>
-              <Text style={{color:'#E62221'}} onPress={() =>navigate('HealthProfile', {user: this.state.memberString})}>MY HEALTH PROFILE ></Text>
-            </View>
-            <View style={{
-                      borderBottomColor: '#e4e4e4',
-                      borderBottomWidth: 1,
-                      width:width,
-                      alignSelf:'center',
-                      marginTop:10
-                    }}
-                  />
-            <View style={styles.profileList}>
-              <Text style={{color:'#E62221'}}>Account</Text>
-              <View>
-              {
-                list.map((item, i) => (
-                  <ListItem
-                    key={i}
-                    title={item.title}
-                    titleStyle={{fontSize:12, color:'black', padding:5}}
-                    leftIcon={{ name: item.icon }}
-                    containerStyle={{width:width-40, borderBottomColor:'#f1f1f1'}}
-                    topDivider="false"
-                    onPress={() =>navigate(item.route, {user: this.state.memberString})}
-                  />
-                ))
-              }
-            </View>
-            </View>             
+    if(this.state.member){
+      return (
+        <View style={styles.container}>
+          <View style={styles.innerContainer}>
+              <View style={styles.profileHead}>
+                <Text style={{alignSelf:'flex-start', fontSize:14}}>{this.state.member.name}</Text>
+                <Text style={{color:'#E62221'}} onPress={() =>navigate('HealthProfile', {user: this.state.member})}>MY HEALTH PROFILE ></Text>
+              </View>
+              <View style={{
+                        borderBottomColor: '#e4e4e4',
+                        borderBottomWidth: 1,
+                        width:width,
+                        alignSelf:'center',
+                        marginTop:10
+                      }}
+                    />
+              <View style={styles.profileList}>
+                <Text style={{color:'#E62221'}}>Account</Text>
+                <View>
+                {
+                  list.map((item, i) => (
+                    <ListItem
+                      key={i}
+                      title={item.title}
+                      titleStyle={{fontSize:12, color:'black', padding:5}}
+                      leftIcon={{ name: item.icon }}
+                      containerStyle={{width:width-40, borderBottomColor:'#f1f1f1'}}
+                      topDivider="false"
+                      onPress={() =>navigate(item.route, {user: this.state.memberString})}
+                    />
+                  ))
+                }
+                <ListItem
+                      title={'Logout'}
+                      titleStyle={{fontSize:12, color:'black', padding:5}}
+                      leftIcon={{ name: 'rotate-right' }}
+                      containerStyle={{width:width-40, borderBottomColor:'#f1f1f1'}}
+                      topDivider="false"
+                      onPress={() => this.userLogout()}
+                    />
+              </View>
+              </View>             
+          </View>
         </View>
-      </View>
-    );
+      );
+    }
+    else{
+      return(
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      )
+    }
+    
   }
 }
 
@@ -130,5 +153,9 @@ const styles = StyleSheet.create({
   },
   profileList:{
     margin:30
-  }
+  },
+
+  loader:{
+    marginTop:'100%',
+  }, 
 });

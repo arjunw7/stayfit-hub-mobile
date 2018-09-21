@@ -7,12 +7,47 @@ import {
   TouchableHighlight,
   Image
 } from 'react-native';
-
+import CONFIG from '../config/config'
 export default class SignupScreen extends Component {
   static navigationOptions = {
     title: 'Signup',
     header: null
     };
+     async saveItem(item, selectedValue) {
+    try {
+        await AsyncStorage.setItem(item, selectedValue);
+    } catch (error) {
+        alert("AsyncStorage error")
+        console.error('AsyncStorage error: ' + error.message);
+    }
+    }
+
+    initUser(token) {
+        axios.get('https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' + token)
+        .then((response) => {
+            const { navigate } = this.props.navigation;
+            var login = {
+                username: response.data.email,
+                password: "master"
+            }
+            axios.post(CONFIG.base_url + 'login/', login)
+            .then((response) => {
+                var user = JSON.stringify(response.data)
+                if(response.data.designation=='Member'){
+                    this.props.navigation("Dashboard", {user: user})
+                }
+                else
+                this.props.navigation("SuperAdminHome", {user: user})
+            })
+            .catch((error) => {
+                console.log(error)
+                alert(error)
+            })  
+        })
+        .catch((error) => {
+            alert(JSON.stringify(error))
+        }) 
+      }
   render() {
     const { navigate } = this.props.navigation;
     return (

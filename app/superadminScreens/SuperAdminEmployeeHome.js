@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar, SearchBar, ListItem, Icon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import GradientHeader from '../components/GradientHeader';
 import axios from 'axios';
 import {
   StyleSheet,
@@ -12,6 +11,8 @@ import {
   ActivityIndicator
 } from 'react-native';
 var width = Dimensions.get('window').width;
+import CONFIG from '../config/config'
+
 export default class SuperAdminEmployeeHome extends Component {
     constructor(props) {
         super(props);
@@ -22,10 +23,10 @@ export default class SuperAdminEmployeeHome extends Component {
             headTrainerInput: '',
         }
         if(this.props.navigation.state.params.employeeType=='trainer'){       
-            axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/trainers')
+            axios.get(CONFIG.base_url + 'trainers')
             .then((response) => {
                 console.log(response)
-                this.setState({trainers:response.data})
+                this.setState({trainers:response.data._embedded.trainers})
             })
             .catch((error) => {
                 console.log(error)
@@ -33,10 +34,10 @@ export default class SuperAdminEmployeeHome extends Component {
             })
         }
         else if(this.props.navigation.state.params.employeeType=='headTrainer'){       
-            axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/headTrainers')
+            axios.get(CONFIG.base_url + 'headTrainers')
             .then((response) => {
                 console.log(response)
-                this.setState({headTrainers:response.data})
+                this.setState({headTrainers:response.data._embedded.headTrainers})
             })
             .catch((error) => {
                 console.log(error)
@@ -44,10 +45,10 @@ export default class SuperAdminEmployeeHome extends Component {
             })
         }
         else if(this.props.navigation.state.params.employeeType=='frontdesk'){       
-            axios.get('http://sf-servicesapp.screqvrs8e.us-east-2.elasticbeanstalk.com/frontdeskAdmins')
+            axios.get(CONFIG.base_url + 'frontdeskAdmins')
             .then((response) => {
                 console.log(response)
-                this.setState({frontdeskAdmins:response.data})
+                this.setState({frontdeskAdmins:response.data._embedded.frontdeskAdmins})
             })
             .catch((error) => {
                 console.log(error)
@@ -60,11 +61,31 @@ export default class SuperAdminEmployeeHome extends Component {
         title: 'Employees',
         header: null
     }
+    renderHeader(empType){
+        const {navigate} = this.props.navigation;
+        return(
+                <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+                    <Avatar
+                        size="small"
+                        rounded
+                        icon={{name: 'arrow-back'}}
+                        onPress={() => navigate('SuperAdminHome')}
+                        containerStyle={{margin: 30}}
+                    />
+                    <Text style={{
+                        fontSize:24,
+                        color:'white',
+                        marginLeft:30,
+                        marginTop:-10
+                    }}>Add {empType}</Text>
+                </LinearGradient>
+            )
+    }
     renderEmployeeTabs(empType, navigate){
         if(empType=='trainer'){
             return (
                 <View>
-                    <GradientHeader title="Trainers" navigation={this.props.navigation}/>
+                    {this.renderHeader("Trainers")}
                     <SearchBar
                     round
                     lightTheme
@@ -98,7 +119,7 @@ export default class SuperAdminEmployeeHome extends Component {
         else if(empType=='headTrainer'){
             return(
                 <View>
-                    <GradientHeader title="Head Trainers" navigation={this.props.navigation}/>
+                    {this.renderHeader("Head Trainers")}
                     <SearchBar
                     round
                     lightTheme
@@ -132,7 +153,7 @@ export default class SuperAdminEmployeeHome extends Component {
         else if(empType=='frontdesk'){
             return(
                 <View>
-                    <GradientHeader title="Frontdesk Admins" navigation={this.props.navigation}/>
+                    {this.renderHeader("Frontdesk Admins")}
                     <SearchBar
                     round
                     lightTheme

@@ -9,14 +9,14 @@ import {
   ActivityIndicator
 } from 'react-native';
 
-var base_url = "http://192.168.0.4:8080/"
+import CONFIG from '../config/config'
 export default class GoalScreen extends Component {
   constructor(props) {
     super(props);
     this.state = { 
        
     }      
-    axios.get(base_url +'goals')
+    axios.get(CONFIG.base_url +'goals')
     .then((response) => {
         console.log(response.data)
         this.setState({goals:response.data._embedded.goals})

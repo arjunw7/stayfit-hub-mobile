@@ -1,18 +1,40 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, Image, TouchableHighlight, Text} from 'react-native';
+import {
+  StyleSheet, 
+  View, 
+  Image, 
+  TouchableHighlight, 
+  Text,
+  AsyncStorage,
+  ActivityIndicator
+} from 'react-native';
 export default class HomeScreen extends Component{
   static navigationOptions = {
     title: 'Home',
     header: null
   };
-  
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedItems: []
+    }
+  }
+  componentWillMount() {
+    const { navigate } = this.props.navigation;
+    AsyncStorage.getItem('member').then((member) => {
+      if(member){
+        navigate("Dashboard", {member: member})
+      }
+    })
+  }
+
   render() {
     const { navigate } = this.props.navigation;
-    return (
+      return (
         <View style={styles.container}>
             <Image source={require('../assets/background.png')}
                 style={{width:"100%", height:"100%"}}
-                resizeMode="contain">
+                resizeMode="cover">
             </Image>
             <Image source={require('../assets/mainLogo.png')}
                 style={styles.mainLogo}>
@@ -33,6 +55,7 @@ export default class HomeScreen extends Component{
             </View>
         </View> 
     );
+    
   }
 }
 const styles = StyleSheet.create({
@@ -40,6 +63,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  loader:{
+    marginTop:'100%',
+  }, 
   mainLogo: {
     flex: 1,
     justifyContent: 'center',
