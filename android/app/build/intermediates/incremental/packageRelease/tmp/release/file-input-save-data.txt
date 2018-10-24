@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Sep 21 04:30:12 IST 2018
+#Sat Oct 06 17:04:12 IST 2018
 5.base=/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/transforms/mergeJniLibs/release/0
 42.base=/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/transforms/mergeJniLibs/release/0
 22.path=fonts/rubicon-icon-font.ttf

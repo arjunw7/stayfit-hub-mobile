@@ -4,7 +4,7 @@
             "outputFile": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-v22/values-v22.xml",
             "map": [
                 {
-                    "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/values-v22/values-v22.xml",
+                    "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/values-v22/values-v22.xml",
                     "from": {
                         "startLines": "2,3,4,9",
                         "startColumns": "4,4,4,4",
@@ -20,7 +20,7 @@
             "outputFile": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/values-v22/values-v22.xml",
             "map": [
                 {
-                    "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/values-v22/values-v22.xml",
+                    "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/values-v22/values-v22.xml",
                     "from": {
                         "startLines": "2,3,4,9",
                         "startColumns": "4,4,4,4",

@@ -8,6 +8,7 @@ import {
   AsyncStorage,
   ActivityIndicator
 } from 'react-native';
+
 export default class HomeScreen extends Component{
   static navigationOptions = {
     title: 'Home',
@@ -16,15 +17,14 @@ export default class HomeScreen extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      selectedItems: []
     }
   }
   componentWillMount() {
     const { navigate } = this.props.navigation;
     AsyncStorage.getItem('member').then((member) => {
-      if(member){
-        navigate("Dashboard", {member: member})
-      }
+     if(JSON.parse(member).id){
+      navigate("Dashboard", {member: member})
+     }
     })
   }
 
@@ -46,7 +46,7 @@ export default class HomeScreen extends Component{
                   <Text style={styles.signupText}>SIGN UP</Text>
                 </View>
               </TouchableHighlight>
-                <Text style={styles.memberText}>alreade a stayfit member?</Text>
+                <Text style={styles.memberText}>already a stayfit member?</Text>
                 <TouchableHighlight onPress={() =>navigate('Login')} underlayColor="transparent">
                 <View style={styles.login}>
                   <Text style={styles.loginText}>LOG IN</Text>

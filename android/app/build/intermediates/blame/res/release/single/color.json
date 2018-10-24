@@ -1,98 +1,98 @@
 [
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_secondary_text_material_dark.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_secondary_text_material_dark.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_secondary_text_material_dark.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_tint_spinner.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_tint_spinner.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_tint_spinner.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_hint_foreground_material_light.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_hint_foreground_material_light.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_hint_foreground_material_light.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_hint_foreground_material_dark.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_hint_foreground_material_dark.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_hint_foreground_material_dark.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_primary_text_material_light.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_primary_text_material_light.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_primary_text_material_light.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_tint_btn_checkable.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_tint_btn_checkable.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_tint_btn_checkable.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_primary_text_material_dark.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_primary_text_material_dark.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_primary_text_material_dark.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_tint_default.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_tint_default.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_tint_default.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_tint_edittext.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_tint_edittext.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_tint_edittext.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/common_google_signin_btn_text_dark.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.1.aar/fff76901366fc3c557b83a9cc3be95eb/res/color/common_google_signin_btn_text_dark.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/play-services-base-15.0.1.aar/4ac95c7529bf19ad37138b793d296234/res/color/common_google_signin_btn_text_dark.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_btn_colored_borderless_text_material.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_btn_colored_borderless_text_material.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_btn_colored_borderless_text_material.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_btn_colored_text_material.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_btn_colored_text_material.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_btn_colored_text_material.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/common_google_signin_btn_tint.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.1.aar/fff76901366fc3c557b83a9cc3be95eb/res/color/common_google_signin_btn_tint.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/play-services-base-15.0.1.aar/4ac95c7529bf19ad37138b793d296234/res/color/common_google_signin_btn_tint.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_search_url_text.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_search_url_text.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_search_url_text.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_tint_seek_thumb.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_tint_seek_thumb.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_tint_seek_thumb.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_tint_switch_track.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_tint_switch_track.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_tint_switch_track.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/com_facebook_send_button_text_color.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-share-4.34.0.aar/095838c38aeb8d44b1b5de9441134f68/res/color/com_facebook_send_button_text_color.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-share-4.34.0.aar/7ca878a7a96369bb624dd71c256c8df3/res/color/com_facebook_send_button_text_color.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_secondary_text_material_light.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_secondary_text_material_light.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_secondary_text_material_light.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/com_facebook_button_text_color.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-common-4.34.0.aar/71561d6e71c9ecd055de48e3e7c241dd/res/color/com_facebook_button_text_color.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-common-4.34.0.aar/974085b268930c10e4918ba2b6111f1b/res/color/com_facebook_button_text_color.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/common_google_signin_btn_text_light.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.1.aar/fff76901366fc3c557b83a9cc3be95eb/res/color/common_google_signin_btn_text_light.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/play-services-base-15.0.1.aar/4ac95c7529bf19ad37138b793d296234/res/color/common_google_signin_btn_text_light.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/switch_thumb_material_light.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/switch_thumb_material_light.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/switch_thumb_material_light.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_primary_text_disable_only_material_dark.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_primary_text_disable_only_material_dark.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_primary_text_disable_only_material_dark.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/abc_primary_text_disable_only_material_light.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/abc_primary_text_disable_only_material_light.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/abc_primary_text_disable_only_material_light.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/color/switch_thumb_material_dark.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color/switch_thumb_material_dark.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color/switch_thumb_material_dark.xml"
     }
 ]

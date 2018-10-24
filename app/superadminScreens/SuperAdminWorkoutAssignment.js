@@ -59,23 +59,24 @@ static navigationOptions = {
 }
 addWorkoutAssignment(){
     var workoutAssignment = {
-        memberId: this.state.memberID,
-        planId: this.state.planID,
+        workoutPlanId: this.state.planID,
         startDate:this.state.startDate,
         endDate:this.state.endDate
     }
-    if(!this.state.memberId || !this.state.planId || !this.state.startDate || !this.stare.endDate){
-        alert("All fields ae mandatory.")
+    alert(JSON.stringify(workoutAssignment))
+    if(!workoutAssignment.workoutPlanId || !workoutAssignment.startDate || !workoutAssignment.endDate){
+        alert("All fields are mandatory.")
     }
     else if(this.state.startDate==this.state.endDate){
         alert("Start date and end date cannot be same")
     }
     else{
-         axios.post(CONFIG.base_url + 'workoutAssignment', workoutAssignment)
+         axios.put(CONFIG.base_url + 'members/'+this.state.memberID + '/workoutPlans?workoutPlanId=' + workoutAssignment.workoutPlanId + '&startDate='+ new Date(workoutAssignment.startDate).getTime() + '&endDate=' + new Date(workoutAssignment.endDate).getTime())
         .then((response) => {
             alert("Workout assigned to the user.")
         })
         .catch((error) => {
+          console.log(error)
             alert(error)
         })
     }
@@ -126,6 +127,7 @@ addWorkoutAssignment(){
                     style={styles.inputStyle}
                     placeholder="Select plan"
                     onValueChange={(itemIndex) => {this.setState({planID: itemIndex})}}>      
+                    <Picker.Item label={"Select Plan"} value={0} />
                     {
                       this.state.plansList
                       .map((item, i) => (

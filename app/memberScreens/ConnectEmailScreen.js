@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import { Avatar, FormLabel, FormInput, Icon, SocialIcon } from 'react-native-elements';
-// import { LoginButton, AccessToken } from 'react-native-fbsdk';
+import { LoginButton, AccessToken } from 'react-native-fbsdk';
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
+import { LoginManager} from 'react-native-fbsdk';
 import {
     StyleSheet,
     Text,
     View,
     Dimensions,
     TextInput,
-    AsyncStorage
+    AsyncStorage,
+    KeyboardAvoidingView,
+    ScrollView,
+    ActivityIndicator
 } from 'react-native';
 var width = Dimensions.get('window').width;
 import CONFIG from '../config/config'
@@ -24,68 +28,80 @@ export default class ConnectEmailScreen extends Component {
         title: 'Signup',
         header: null
     };
-     async saveItem(item, selectedValue) {
-    try {
-        await AsyncStorage.setItem(item, selectedValue);
-    } catch (error) {
-        alert("AsyncStorage error")
-        console.error('AsyncStorage error: ' + error.message);
+    async saveItem(item, selectedValue) {
+        try {
+            await AsyncStorage.setItem(item, selectedValue);
+        } catch (error) {
+            alert("AsyncStorage error")
+            console.error('AsyncStorage error: ' + error.message);
+        }
     }
-    }
+    showLoader(){
+        if(this.state.showLoader){
+            return(
+              <View style={styles.loader}>
+                  <ActivityIndicator size="large" color="white" />
+              </View>
+            )
+        }
+      }
 
-    // initUser(token) {
-    //     axios.get('https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' + token)
-    //     .then((response) => {
-    //         const { navigate } = this.props.navigation;
-    //         var tempMember = this.state.member;
-    //         tempMember.email = respponse.data.email;
-    //         tempMember.password = "master";
-    //         tempMember.phone = "";
-    //         tempMember.designation = "Member"
-    //         axios.post(CONFIG.base_url + 'signup', tempMember)
-    //           .then((response) => {
-    //               if(response.data.error=="OK"){
-    //                   alert(response.data.message)
-    //               }
-    //               else {
-    //                 var member = JSON.stringify(response.data);
-    //                 this.saveItem('member', member)
-    //                 if(response.data.designation=='Member'){
-    //                 const navigateAction = NavigationActions.navigate({
-    //                     routeName: 'Dashboard',
-    //                     params: {member: member},
-    //                     action: NavigationActions.navigate({
-    //                             routeName: 'Plan', params:{member:member}}),
-    //                     });
-    //                     this.props.navigation.dispatch(navigateAction);
-    //                 }
-    //                 else
-    //                 navigate("SuperAdminHome", {user: member})
-    //                 }
-    //           })
-    //           .catch((error) => {
-    //               alert("The email is already registerd. Please login with email to continue.")
-    //               navigate("Login")
-    //           }) 
-    //     })
-    //     .catch((error) => {
-    //         alert(JSON.stringify(error))
-    //     }) 
-    //   }
+    initUser(token) {
+        this.setState({showLoader: true})
+        axios.get('https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' + token)
+        .then((response) => {
+            const { navigate } = this.props.navigation;
+            var tempMember = this.state.member;
+            tempMember.email = response.data.email;
+            tempMember.password = "";
+            tempMember.designation = "Member"
+            axios.post(CONFIG.base_url + 'signup/facebook', tempMember)
+              .then((response) => {
+                  if(response.data.error=="OK"){
+                      alert(response.data.message)
+                      console.log(response)
+                  }
+                  else {
+                    var member = JSON.stringify(response.data);
+                    this.saveItem('member', member)
+                    navigate("Dashboard", {member:member})
+                  }
+                this.setState({showLoader: false})
+              })
+              .catch((error) => {
+                  alert("The email is already registerd. Please login with the same email to continue.")
+                  LoginManager.logOut()
+                  navigate("Login")
+                  this.setState({showLoader: false})
+              }) 
+        })
+        .catch((error) => {
+            alert(JSON.stringify(error))
+            console.log(error)
+            LoginManager.logOut()
+            this.setState({showLoader: false})
+        }) 
+      }
     signup(){
+        this.setState({showLoader: true})
         const { navigate } = this.props.navigation;
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        let regMob = /[2-9]{2}\d{8}/
         if(!this.state.email || !this.state.password || !this.state.phone){
             alert("Please fill all the details.")
+            this.setState({showLoader: false})
         }
         else if(this.state.phone.length<10){
             alert("Please enter a valid Mobile Number")
+            this.setState({showLoader: false})
         }
         else if(this.state.password.length<8){
             alert("Password should be minimum 8 characters.")
+            this.setState({showLoader: false})
         } 
         else if(reg.test(this.state.email) === false){
             alert("Please enter a valid email address")
+            this.setState({showLoader: false})
         } 
         else{
             var tempMember = this.state.member;
@@ -101,29 +117,23 @@ export default class ConnectEmailScreen extends Component {
                   else {
                     var member = JSON.stringify(response.data);
                     this.saveItem('member', member)
-                    if(response.data.designation=='Member'){
-                    const navigateAction = NavigationActions.navigate({
-                        routeName: 'Dashboard',
-                        params: {member: member},
-                        action: NavigationActions.navigate({
-                                routeName: 'Dashboard', params:{member:member}}),
-                        });
-                        this.props.navigation.dispatch(navigateAction);
+                    navigate("Dashboard", {member:member})
                     }
-                    else
-                    navigate("SuperAdminHome", {user: member})
-                    }
+                this.setState({showLoader: false})
+
               })
               .catch((error) => {
                   console.log(error)
-                  alert(error)
+                  alert(error) 
+                  this.setState({showLoader: false})
               })
         }
     }
     render() {
         const { navigate } = this.props.navigation;
         return ( 
-        <View style = {styles.container }>
+        <KeyboardAvoidingView style = {styles.container }>
+            {this.showLoader()}
             <Avatar
                 size="small"
                 rounded
@@ -131,19 +141,14 @@ export default class ConnectEmailScreen extends Component {
                 onPress={() => navigate('GoalSelection')}
                 containerStyle={{margin: 30}}
                 />
-
+            <ScrollView>
             <View style = { styles.innerContainer } >
                     <Text style = { styles.mainText }> Register an Email </Text>
 
                     <Text style = { styles.subText }>Connect an email to your account so that you can experience &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; the personalized app across all your devices. </Text>
 
-                    <View>
-                    <SocialIcon
-                        title = 'Sign up with facebook'
-                        button type = 'facebook'
-                        style = { styles.facebook }
-                    /> 
-                        {/* <LoginButton 
+                    <View  style = { styles.facebook }>
+                        <LoginButton 
                         readPermissions = {['public_profile', 'email'] }
                             onLoginFinished = {
                                 (error, result) => {
@@ -152,9 +157,9 @@ export default class ConnectEmailScreen extends Component {
                                     } else if (result.isCancelled) {
                                         console.log("login is cancelled.");
                                     } else {
-                                        AccessToken.getCurrentAccessToken().then(
-                                            (data) => {
-                                                this.initUser(data)
+                                        AccessToken.getCurrentAccessToken().then((data) => {
+                                                const { accessToken } = data
+                                                this.initUser(accessToken)
                                             }
                                         )
                                     }
@@ -162,7 +167,7 @@ export default class ConnectEmailScreen extends Component {
                             }
                             onLogoutFinished = {
                                 () => console.log("logout.") }
-                            />  */}
+                            /> 
                     </View>
 
                     <View style = {{
@@ -186,7 +191,7 @@ export default class ConnectEmailScreen extends Component {
                             fontWeight: '300'
                         }}> Your email </FormLabel> 
                      <TextInput
-                        maxLength={30}
+                        maxLength={100}
                         style={styles.inputStyle}
                         keyboardType="email-address"
                         autoCapitalize="none"
@@ -222,7 +227,8 @@ export default class ConnectEmailScreen extends Component {
                     </Text> 
                 </View>
         </View>
-        </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
         );
     }
 }
@@ -268,7 +274,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         padding: 10,
         marginTop: 30,
-        fontWeight: 'bold'
     },
     signup: {
         width: 300,
@@ -312,12 +317,20 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         marginTop: 30
     },
-
-  inputStyle:{
-    width:width-80,
-    marginLeft: 20,
-    height:40,
-    borderBottomColor:'#E62221',
-    borderBottomWidth: 1,
+    inputStyle:{
+        width:width-80,
+        marginLeft: 20,
+        height:40,
+        borderBottomColor:'#E62221',
+        borderBottomWidth: 1,
+    },
+  loader:{
+    flex:1,
+    width:width,
+    height:"100%",
+    position:'absolute',
+    zIndex:100,
+    backgroundColor:"rgba(0,0,0,0.7)",
+    paddingTop:"100%"
   }
 });

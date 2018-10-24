@@ -250,8 +250,8 @@ addMember(){
     }
     return (
       <View style={styles.loader}>
-      <ActivityIndicator size="large" color="black" />
-    </View>
+        <ActivityIndicator size="large" color="black" />
+      </View>
     )
     
   }

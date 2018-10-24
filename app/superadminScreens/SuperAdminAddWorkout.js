@@ -51,6 +51,7 @@ addRow(){
     .then((response) => {
        var exercises = this.state.workoutExercises
        exercises.push(response.data)
+       alert(JSON.stringify(response.data))
        this.setState({workoutExercises: exercises})
     })
     .catch((error) => {
@@ -69,10 +70,12 @@ removeRow(index, i){
     })
 }
 updateExerciseListItemExercise(item, i){
+  alert(item)
   axios.get(CONFIG.base_url + 'exercises/'+item)
     .then((response) => {
       var exercises = this.state.workoutExercises
       exercises[i].exercise = response.data;
+      exercises[i].exId = item;
       this.setState({workoutExercises: exercises})
     })
     .catch((error) => {

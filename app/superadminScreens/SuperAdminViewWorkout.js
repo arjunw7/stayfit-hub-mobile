@@ -76,7 +76,8 @@ updateExerciseListItemExercise(item, i){
   axios.get(CONFIG.base_url + 'exercises/'+item)
     .then((response) => {
       var plan = this.state.workoutPlan;
-      plan.workoutExercises[i].exercise = response.data;
+      plan.workoutExercises[i].exId = item;
+      plan.workoutExercises[i].exercise = response.data
       this.setState({workoutPlan: plan})
     })
     .catch((error) => {

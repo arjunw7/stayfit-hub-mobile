@@ -38,11 +38,17 @@ import SuperAdminMealHome from './superadminScreens/SuperAdminMealHome'
 import SuperAdminDietHome from './superadminScreens/SuperAdminDietHome'
 import SuperAdminWorkoutAssignment from './superadminScreens/SuperAdminWorkoutAssignment'
 import AttendanceScanner from './memberScreens/AttendanceScanner';
-
-import SplashScreen from 'react-native-splash-screen'
+import PackDetails from './memberScreens/PackDetails'
+import BookAppointment from './memberScreens/BookAppointment'
+import AllAppointments from './memberScreens/AllAppointments'
+import EmailVerification from './memberScreens/EmailVerification'
+import ForgotPasswordEmailInput from './memberScreens/ForgotPasswordEmailInput'
+import VerifyPasswordChange from './memberScreens/VerifyPasswordChange'
+import ForgotPasswordInput from './memberScreens/ForgotPasswordInput'
 import {
   StackNavigator,
 } from 'react-navigation';
+import SplashScreen from 'react-native-splash-screen'
 const Router = StackNavigator({
     Home: { screen: HomeScreen },
     Profile: { screen: ProfileScreen }, 
@@ -59,6 +65,13 @@ const Router = StackNavigator({
     MyTrainer: {screen: MyTrainerScreen},
     Support: {screen: SupportScreen},
     AttendanceScanner: {screen: AttendanceScanner},
+    PackDetails: {screen: PackDetails},
+    BookAppointment : {screen: BookAppointment},
+    AllAppointments: {screen: AllAppointments},
+    EmailVerification: {screen: EmailVerification},
+    ForgotPasswordEmailInput: {screen : ForgotPasswordEmailInput},
+    VerifyPasswordChange: {screen: VerifyPasswordChange},
+    ForgotPasswordInput: {screen: ForgotPasswordInput},
     Dashboard: { screen: MemberTabNavigation,
         navigationOptions: ({ navigation }) => ({
         header:null
@@ -91,10 +104,10 @@ const Router = StackNavigator({
 );
 
 export default class App extends Component{
-  componentDidMount() {
+  componentDidMount(){
       SplashScreen.hide();
   }
-  render() {
+    render() {
       return <Router />;   
   }
 }

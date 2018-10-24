@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Avatar, Icon, SocialIcon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import DatePicker from 'react-native-datepicker';
-import { Picker } from 'react-native-picker-dropdown';
+import { DatePickerDialog } from 'react-native-datepicker-dialog'
+import Moment from 'moment';
 import axios from 'axios';
 import CONFIG from '../config/config'
+import ActionSheet from 'react-native-actionsheet'
 import {
   StyleSheet,
   Text,
@@ -14,27 +15,31 @@ import {
   TextInput,
   AsyncStorage,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView
 } from 'react-native';
 var width = Dimensions.get('window').width;
+const optionsGender = [
+  "Male",
+  "Female",
+  "Cancel"
+]
 export default class AccountDetailsScreen extends Component {
   constructor(props) {
     super(props);
     this.state ={
+      initials: ''
     }
-}
-async saveItem(item, selectedValue) {
-  try {
-      await AsyncStorage.setItem(item, selectedValue);
-  } catch (error) {
-      alert("AsyncStorage error")
-      console.error('AsyncStorage error: ' + error.message);
   }
-  }
-  static navigationOptions = {
-    title: 'Account Details',
-    header:null
-  };
+  showLoader(){
+        if(this.state.showLoader){
+            return(
+              <View style={styles.ploader}>
+                  <ActivityIndicator size="large" color="grey" />
+              </View>
+            )
+        }
+    }
   async saveItem(item, selectedValue) {
     try {
         await AsyncStorage.setItem(item, selectedValue);
@@ -43,11 +48,52 @@ async saveItem(item, selectedValue) {
         console.error('AsyncStorage error: ' + error.message);
     }
   }
+  static navigationOptions = {
+    title: 'Account Details',
+    header:null
+  };
   componentWillMount(){
     AsyncStorage.getItem('member').then((member) => {
-      this.setState({user:JSON.parse(member)})
+      this.setState({
+        user:JSON.parse(member),
+        dobText: JSON.parse(member).dob,
+        dobDate: JSON.parse(member).dob,
+      })
+      this.getInitials(JSON.parse(member).name)
     })
   }
+  showActionSheet = () => {
+    this.ActionSheet.show()
+  }
+  getInitials(name){
+    var res = name.split(" ");
+    if(res.length>1){
+        if(res[1].length>0){
+          this.setState({initials:res[0][0].toUpperCase() + res[1][0].toUpperCase()})
+        }
+        else{
+          this.setState({initials:res[0][0].toUpperCase() + res[0][0].toUpperCase()})
+        }
+    }
+    else{
+      this.setState({initials:res[0][0].toUpperCase() + res[0][0].toUpperCase()})
+    }
+  }
+
+  onDobPress = () => {
+      let dobDate = new Date();
+      this.refs.dobDialog.open({
+      date: dobDate,
+      maxDate: new Date() //To restirct past date
+      });
+  }
+
+  onDobPicked = (date) => {
+       var tempMember = this.state.user;
+       tempMember.dob = date;
+       this.setState({user:tempMember})
+  }
+
   updateName(itemValue){
     var tempMember = this.state.user;
     tempMember.name = itemValue
@@ -63,42 +109,48 @@ async saveItem(item, selectedValue) {
     tempMember.email = itemValue
     this.setState({user:tempMember})
   }
-  updateGender(itemValue){
-    var tempMember = this.state.user;
-    tempMember.gender = itemValue
-    this.setState({user:tempMember})
-  }
-  updateDob(itemValue){
-    //alert(itemValue)
-    var tempMember = this.state.user;
-    tempMember.dob = itemValue;
-    //alert(tempMember.dob)
-    this.setState({user:tempMember})
-  }
   updateMember(){
-    axios.put(CONFIG.base_url + 'members/' + this.state.user.id, this.state.user)
+    var user = this.state.user;
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(!user.name || !user.email){
+      alert("Name and email are mandatory.")
+    }
+    else if(reg.test(user.email) === false){
+      alert("Please enter a valid email address")
+    } 
+    else if(user.phone && user.phone.length<10){
+      alert("Please enter a valid Mobile Number")
+    }
+    else{
+    this.setState({showLoader:true})
+      axios.put(CONFIG.base_url + 'members/' + this.state.user.id, this.state.user)
     .then((response) => {
         axios.get(CONFIG.base_url + 'members/'+this.state.user.id)
         .then((response) => {
             this.saveItem('member', JSON.stringify(response.data))
             this.setState({user:response.data})
+            this.setState({showLoader:false})
             alert("Member details updated.")
         })
         .catch((error) => {
             console.log(error)
+            this.setState({showLoader:false})
             alert(error)
         })
     })
     .catch((error) => {
         console.log(error)
+        this.setState({showLoader:false})
         alert(error)
     })
+    }
   }
   render() {
     const { navigate } = this.props.navigation;
     if(this.state.user){
       return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}>
+        {this.showLoader()}
           <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
             <Avatar
               size="small"
@@ -109,7 +161,7 @@ async saveItem(item, selectedValue) {
             />
             <Avatar
                 rounded
-                title="AW"
+                title={this.state.initials}
                 overlayContainerStyle={{backgroundColor: 'transparent'}}
                 onPress={() => console.log("Works!")}
                 titleStyle={{color:'grey', fontSize:36}}
@@ -149,18 +201,37 @@ async saveItem(item, selectedValue) {
                     style={styles.inputStyle}
                     placeholder="Enter email"
                     value={this.state.user.email}
+                    editable={false}
                     onChangeText={(email) => this.updateEmail(email)}
                   />
                   <Text style={styles.label}>Gender</Text>
-                  <Picker
-                      selectedValue={this.state.user.gender}
-                      style={styles.inputStyle}
-                      placeholder="Select gender"
-                      onValueChange={(itemValue) => this.updateGender(itemValue)}>
-                      <Picker.Item label="Select gender" value="Select gender" />
-                      <Picker.Item label="Male" value="Male" />
-                      <Picker.Item label="Female" value="Female" />
-                </Picker>
+                  <TouchableHighlight onPress={this.showActionSheet} underlayColor="transparent">
+                  <View style={styles.row}>
+                    <Text style={styles.centerText}>{this.state.user.gender}</Text> 
+                    <Icon
+                    name='chevron-small-down'
+                    color='#E62221'
+                    type='entypo'
+                    containerStyle={{
+                        position:'absolute',
+                        right:5
+                    }} />
+                  </View>
+                  </TouchableHighlight>
+                  <ActionSheet
+                    ref={o => this.ActionSheet = o}
+                    title={'Your gender?'}
+                    options={optionsGender}
+                    cancelButtonIndex={2}
+                    destructiveButtonIndex={2}
+                    onPress={(index) => { 
+                            if(index!=2){
+                              var tempMember = this.state.user;
+                              tempMember.gender = optionsGender[index]
+                              this.setState({user:tempMember})
+                            }
+                    }}
+                    />
                 <Text style={styles.label}>Contact number</Text>
                 <TextInput
                     maxLength={10}
@@ -171,35 +242,20 @@ async saveItem(item, selectedValue) {
                     onChangeText={(phone) => this.updatePhone(phone)}
                   />
                   <Text style={styles.label}>Date of birth</Text>
-                  <DatePicker
-                        style={styles.inputStyleDOB}
-                        date={this.state.user.dob}
-                        mode="date"
-                        maxDate={new Date()}
-                        confirmBtnText="Confirm"
-                        placeholder="Select date of birth"
-                        cancelBtnText="Cancel"
-                        showIcon={false}
-                        customStyles={{
-                          dateInput: {
-                            borderWidth:0,
-                            paddingLeft:6,
-                            marginTop:6,
-                            paddingTop:0
-                          },
-                          dateText:{
-                            fontSize:14,
-                            alignSelf: 'flex-start',
-                            alignContent: 'flex-start',
-                          },
-                          placeholderText:{
-                            fontSize:14,
-                            alignSelf: 'flex-start',
-                            alignContent: 'flex-start',
-                          }
-                        }}
-                        onDateChange={(dob) => this.updateDob(dob)}>
-                  </DatePicker>
+                  <TouchableHighlight onPress={this.onDobPress.bind(this)} underlayColor="transparent">
+                    <View style={styles.row}>
+                        <Text style={styles.centerText}>{this.state.user.dob?Moment(this.state.user.dob).format('DD MMM, YYYY'): "Select date of birth"}</Text> 
+                        <Icon
+                        name='chevron-small-down'
+                        color='#E62221'
+                        type='entypo'
+                        containerStyle={{
+                            position:'absolute',
+                            right:5
+                        }} />
+                        <DatePickerDialog ref="dobDialog" onDatePicked={this.onDobPicked.bind(this)} />
+                    </View>
+                  </TouchableHighlight>
                 <TouchableHighlight onPress={() => this.updateMember()} underlayColor="transparent">
                     <View style={styles.login}>
                       <Text style={styles.loginText}>Update Details</Text>
@@ -207,13 +263,13 @@ async saveItem(item, selectedValue) {
                 </TouchableHighlight>
            </View>
            </ScrollView>
-        </View>
+        </KeyboardAvoidingView>
       );
     }
     else{
       return(
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+          <ActivityIndicator size="large" color="grey" />
         </View>
       )
     }
@@ -231,8 +287,9 @@ const styles = StyleSheet.create({
     height:160
   },
   inputStyle:{
-    width:width-40,
+    width:width-80,
     height:40,
+    marginLeft: 10,
     paddingLeft: 5,
     borderBottomColor:'#E62221',
     borderBottomWidth: 1,
@@ -262,7 +319,6 @@ const styles = StyleSheet.create({
     padding:10,
     paddingTop:0,
     width:width-40,
-    backgroundColor:'white'
   },
   loader:{
     marginTop:'100%',
@@ -270,6 +326,34 @@ const styles = StyleSheet.create({
   label:{
     color:'#E62221',
     marginTop: 15,
-  }
+    marginLeft: 10,
+  },
+  row:{
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    borderBottomWidth:1,
+    borderBottomColor: '#E62221',
+    width:width-80,
+    marginLeft:10,
+    marginRight: 10,
+    marginTop:15,
+    paddingBottom: 10,
+  },
+  centerText:{
+    color:'black',
+    fontSize:14,
+    marginLeft: 5,
+},
+ploader:{
+  flex:1,
+  width:width,
+  height:"100%",
+  position:'absolute',
+  zIndex:100,
+  backgroundColor:"rgba(255,255,255,0.7)",
+  paddingTop:"70%",
+  marginTop:160
+}
 
 });

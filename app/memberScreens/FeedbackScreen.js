@@ -8,10 +8,11 @@ import {
   Text,
   View,
   Dimensions,
-  AsyncStorage,
   TextInput,
   TouchableHighlight,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView,
+  ActivityIndicator
 } from 'react-native';
 var width = Dimensions.get('window').width;
 import CONFIG from '../config/config'
@@ -27,16 +28,26 @@ export default class FeedbackScreen extends Component {
         selectedItems: []
       }
     }
+    showLoader(){
+      if(this.state.showLoader){
+              return(
+                <View style={styles.ploader}>
+                    <ActivityIndicator size="large" color="grey" />
+                </View>
+              )
+          }
+      }
     onStarRatingPress(rating) {
       this.setState({
         starCount: rating
       });
     }
     submit(){
+      this.setState({showLoader:true})
       var recommendation = ''
       if(this.state.likely) recommendation = "Very Likely"
       else if(this.state.maybe) recommendation = "Maybe"
-      else recommendation = "Unikely"
+      else if(this.state.notLikely) recommendation = "Unikely"
       var feedback = {
         rating: this.state.starCount,
         whatDidYouLike: this.state.whatDidYouLike,
@@ -45,7 +56,8 @@ export default class FeedbackScreen extends Component {
         recommendation: recommendation
       }
       if(!feedback.rating || !feedback.whatDidYouLike || !feedback.whatToImprove || !feedback.recommendation || !feedback.timestamp){
-        alert(JSON.stringify(feedback))
+        alert("Please fill all the fields.")
+        this.setState({showLoader:false})
       }
       else{
         axios.post(CONFIG.base_url + 'feedbacks/', feedback)
@@ -53,16 +65,19 @@ export default class FeedbackScreen extends Component {
             alert("Feedback posted successfully.")
             const { navigate } = this.props.navigation;
             navigate("Dashboard")
+            this.setState({showLoader:false})
         })
         .catch((error) => {
-            alert(error)
+            alert("You feedback could not be submitted. Please try again later.")
+            this.setState({showLoader:false})
         })
       }  
     }
       render() {
         const { navigate } = this.props.navigation;
         return (
-          <View style={styles.container}>
+          <KeyboardAvoidingView style={styles.container}>
+              {this.showLoader()}
               <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
               <Avatar
                 size="small"
@@ -96,14 +111,12 @@ export default class FeedbackScreen extends Component {
                 <TextInput
                     style={styles.inputStyle1}
                     multiline={true}
-                    numberOfLines={5}
                     onChangeText={(whatDidYouLike) => this.setState({whatDidYouLike:whatDidYouLike})}
                   />
                 <Text style={styles.label}>What is it that we should improve?</Text>
                 <TextInput
                     style={styles.inputStyle1}
                     multiline={true}
-                    numberOfLines={5}
                     onChangeText={(whatToImprove) => this.setState({whatToImprove:whatToImprove})}
                   />
                   <Text style={styles.label}>How likely would you recommend stayfit to your friends?</Text>
@@ -133,7 +146,7 @@ export default class FeedbackScreen extends Component {
             </View>
             </ScrollView>
 
-          </View>
+          </KeyboardAvoidingView>
         );
       }
     }
@@ -212,14 +225,22 @@ export default class FeedbackScreen extends Component {
       inputStyle1:{
         borderBottomColor: '#E62221',
         borderBottomWidth: 1,
-        backgroundColor:'white',
+        backgroundColor:'transparent',
         fontSize: 16,
         color:'grey',
-        padding:10,
-        height:60
+        padding:10
       },
       submitText:{
         color:'white',
         fontSize:14
       },
+      ploader:{
+        width:width,
+        height:"100%",
+        position:'absolute',
+        zIndex:100,
+        backgroundColor:"rgba(255,255,255,0.7)",
+        paddingTop:"70%",
+        marginTop:140
+      }
     });

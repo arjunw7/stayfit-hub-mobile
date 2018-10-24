@@ -10,7 +10,9 @@ import {
   TextInput,
   TouchableHighlight,
   AsyncStorage,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView,
+  ActivityIndicator
 } from 'react-native';
 import CONFIG from '../config/config'
 var width = Dimensions.get('window').width;
@@ -31,12 +33,24 @@ export default class SupportScreen extends Component {
           this.setState({user:JSON.parse(member)})
         })
       }
+      showLoader(){
+        if(this.state.showLoader){
+                return(
+                  <View style={styles.ploader}>
+                      <ActivityIndicator size="large" color="grey" />
+                  </View>
+                )
+            }
+        }
       submit(){
+        this.setState({showLoader: true})
         if(!this.state.subject || !this.state.message){
           alert("Please enter all the details.")
+          this.setState({showLoader: false})
         }
         else if(this.state.message.length<10){
           alert("Message too short")
+          this.setState({showLoader: false})
         }
         else{
           var support = {
@@ -48,16 +62,19 @@ export default class SupportScreen extends Component {
               alert("Query submitted successfully. Our team will get back to you ASAP.")
               const { navigate } = this.props.navigation;
               navigate("Dashboard")
+              this.setState({showLoader: false})
           })
           .catch((error) => {
-              alert(error)
+              alert("Your query could not be submitted. Please try again later.")
+              this.setState({showLoader: false})
           })
         }
       }
       render() {
         const { navigate } = this.props.navigation;
         return (
-          <View style={styles.container}>
+          <KeyboardAvoidingView style={styles.container}>
+              {this.showLoader()}
               <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
               <Avatar
                 size="small"
@@ -83,9 +100,7 @@ export default class SupportScreen extends Component {
                   />
               <Text style={styles.label}>Your Message</Text>
               <TextInput
-                    style={styles.inputStyle1}
-                    multiline={true}
-                    numberOfLines={5}
+                    style={styles.inputStyle}
                     value={this.state.message}
                     onChangeText={(message) => this.setState({message:message})}
                   />
@@ -145,7 +160,7 @@ export default class SupportScreen extends Component {
             </View>
             <Text style={styles.disclaimer}>All queies will be answerd directly through mail.</Text>
             </ScrollView>
-          </View>
+          </KeyboardAvoidingView>
         );
       }
     }
@@ -179,7 +194,7 @@ export default class SupportScreen extends Component {
       },
       label:{
         fontSize:16,
-        marginBottom:10,
+        marginBottom:5,
         marginTop: 20,
       },
       inputStyle:{
@@ -189,15 +204,6 @@ export default class SupportScreen extends Component {
         fontSize: 16,
         color:'grey',
         padding:10
-      },
-      inputStyle1:{
-        borderBottomColor: '#E62221',
-        borderBottomWidth: 1,
-        backgroundColor:'white',
-        fontSize: 16,
-        color:'grey',
-        padding:10,
-        height:100
       },
       submitText:{
         color:'white',
@@ -235,5 +241,15 @@ export default class SupportScreen extends Component {
         flexDirection: 'row',
         alignItems: 'center',
         alignSelf: 'center',
+      },
+      ploader:{
+        flex:1,
+        width:width,
+        height:"100%",
+        position:'absolute',
+        zIndex:100,
+        backgroundColor:"rgba(255,255,255,0.7)",
+        paddingTop:"70%",
+        marginTop:140
       }
     });

@@ -1,207 +1,215 @@
 [
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_search_dropdown_item_icons_2line.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_search_dropdown_item_icons_2line.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_search_dropdown_item_icons_2line.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_template_big_media_narrow_custom.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/304a1c831650b843b4934ed3745e3592/res/layout/notification_template_big_media_narrow_custom.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/a962cb07568906b06f827ac67ec321df/res/layout/notification_template_big_media_narrow_custom.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_template_media_custom.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/304a1c831650b843b4934ed3745e3592/res/layout/notification_template_media_custom.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/a962cb07568906b06f827ac67ec321df/res/layout/notification_template_media_custom.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_alert_dialog_button_bar_material.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_alert_dialog_button_bar_material.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_alert_dialog_button_bar_material.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_search_view.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_search_view.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_search_view.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/messenger_button_send_white_large.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/1da31f6f664fd782d307f2a970d6b2c6/res/layout/messenger_button_send_white_large.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/37d6c0c4380d9981dfb576a6bf9f9b89/res/layout/messenger_button_send_white_large.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_popup_menu_header_item_layout.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_popup_menu_header_item_layout.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_popup_menu_header_item_layout.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/com_facebook_tooltip_bubble.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-login-4.34.0.aar/bc88a405f5e6ae3aa8619c6af5493597/res/layout/com_facebook_tooltip_bubble.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-login-4.34.0.aar/dc44ef1380ff20200dc0207c48705a40/res/layout/com_facebook_tooltip_bubble.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_screen_simple.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_screen_simple.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_screen_simple.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/redbox_view.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/react-native-0.56.0.aar/0085766def0c13cc2f0837a5dabce840/res/layout/redbox_view.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/react-native-0.56.0.aar/09e4737c0151af5d8f54dfe55699ed09/res/layout/redbox_view.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/redbox_item_frame.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/react-native-0.56.0.aar/0085766def0c13cc2f0837a5dabce840/res/layout/redbox_item_frame.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/react-native-0.56.0.aar/09e4737c0151af5d8f54dfe55699ed09/res/layout/redbox_item_frame.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/dev_loading_view.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/react-native-0.56.0.aar/0085766def0c13cc2f0837a5dabce840/res/layout/dev_loading_view.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/react-native-0.56.0.aar/09e4737c0151af5d8f54dfe55699ed09/res/layout/dev_loading_view.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_alert_dialog_material.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_alert_dialog_material.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_alert_dialog_material.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/messenger_button_send_white_small.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/1da31f6f664fd782d307f2a970d6b2c6/res/layout/messenger_button_send_white_small.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/37d6c0c4380d9981dfb576a6bf9f9b89/res/layout/messenger_button_send_white_small.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/messenger_button_send_blue_small.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/1da31f6f664fd782d307f2a970d6b2c6/res/layout/messenger_button_send_blue_small.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/37d6c0c4380d9981dfb576a6bf9f9b89/res/layout/messenger_button_send_blue_small.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_template_big_media.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/304a1c831650b843b4934ed3745e3592/res/layout/notification_template_big_media.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/a962cb07568906b06f827ac67ec321df/res/layout/notification_template_big_media.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_expanded_menu_layout.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_expanded_menu_layout.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_expanded_menu_layout.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_alert_dialog_title_material.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_alert_dialog_title_material.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_alert_dialog_title_material.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_template_big_media_narrow.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/304a1c831650b843b4934ed3745e3592/res/layout/notification_template_big_media_narrow.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/a962cb07568906b06f827ac67ec321df/res/layout/notification_template_big_media_narrow.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_action_menu_layout.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_action_menu_layout.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_action_menu_layout.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_template_icon_group.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/5b61ada13d7bbef745dd6bef349ed6b3/res/layout/notification_template_icon_group.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/1a3eb528ad05b4544ae56201d5f890f7/res/layout/notification_template_icon_group.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_list_menu_item_layout.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_list_menu_item_layout.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_list_menu_item_layout.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_action_mode_close_item_material.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_action_mode_close_item_material.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_action_mode_close_item_material.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_select_dialog_material.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_select_dialog_material.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_select_dialog_material.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_action_menu_item_layout.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_action_menu_item_layout.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_action_menu_item_layout.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/support_simple_spinner_dropdown_item.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/support_simple_spinner_dropdown_item.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/support_simple_spinner_dropdown_item.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_action_bar_view_list_nav_layout.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_action_bar_view_list_nav_layout.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_action_bar_view_list_nav_layout.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_template_big_media_custom.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/304a1c831650b843b4934ed3745e3592/res/layout/notification_template_big_media_custom.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/a962cb07568906b06f827ac67ec321df/res/layout/notification_template_big_media_custom.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/messenger_button_send_blue_large.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/1da31f6f664fd782d307f2a970d6b2c6/res/layout/messenger_button_send_blue_large.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/37d6c0c4380d9981dfb576a6bf9f9b89/res/layout/messenger_button_send_blue_large.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/select_dialog_singlechoice_material.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/select_dialog_singlechoice_material.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/select_dialog_singlechoice_material.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_template_part_time.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/5b61ada13d7bbef745dd6bef349ed6b3/res/layout/notification_template_part_time.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/1a3eb528ad05b4544ae56201d5f890f7/res/layout/notification_template_part_time.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_list_menu_item_icon.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_list_menu_item_icon.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_list_menu_item_icon.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_list_menu_item_radio.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_list_menu_item_radio.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_list_menu_item_radio.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_list_menu_item_checkbox.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_list_menu_item_checkbox.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_list_menu_item_checkbox.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/com_facebook_smart_device_dialog_fragment.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-common-4.34.0.aar/71561d6e71c9ecd055de48e3e7c241dd/res/layout/com_facebook_smart_device_dialog_fragment.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-common-4.34.0.aar/974085b268930c10e4918ba2b6111f1b/res/layout/com_facebook_smart_device_dialog_fragment.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_media_cancel_action.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/304a1c831650b843b4934ed3745e3592/res/layout/notification_media_cancel_action.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/a962cb07568906b06f827ac67ec321df/res/layout/notification_media_cancel_action.xml"
+    },
+    {
+        "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/rzp_loader.xml",
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/checkout-1.4.9.aar/de9431375ae67b16ab065b790ecf07c1/res/layout/rzp_loader.xml"
+    },
+    {
+        "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/launch_screen.xml",
+        "source": "/Users/a0w015p/Desktop/StayfitHub/android/app/src/main/res/layout/launch_screen.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_template_media.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/304a1c831650b843b4934ed3745e3592/res/layout/notification_template_media.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/a962cb07568906b06f827ac67ec321df/res/layout/notification_template_media.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_action.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/5b61ada13d7bbef745dd6bef349ed6b3/res/layout/notification_action.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/1a3eb528ad05b4544ae56201d5f890f7/res/layout/notification_action.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/select_dialog_multichoice_material.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/select_dialog_multichoice_material.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/select_dialog_multichoice_material.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_template_part_chronometer.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/5b61ada13d7bbef745dd6bef349ed6b3/res/layout/notification_template_part_chronometer.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/1a3eb528ad05b4544ae56201d5f890f7/res/layout/notification_template_part_chronometer.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_screen_content_include.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_screen_content_include.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_screen_content_include.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_activity_chooser_view_list_item.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_activity_chooser_view_list_item.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_activity_chooser_view_list_item.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_popup_menu_item_layout.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_popup_menu_item_layout.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_popup_menu_item_layout.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_action_tombstone.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/5b61ada13d7bbef745dd6bef349ed6b3/res/layout/notification_action_tombstone.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/1a3eb528ad05b4544ae56201d5f890f7/res/layout/notification_action_tombstone.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_action_bar_title_item.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_action_bar_title_item.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_action_bar_title_item.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_template_lines_media.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/304a1c831650b843b4934ed3745e3592/res/layout/notification_template_lines_media.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/a962cb07568906b06f827ac67ec321df/res/layout/notification_template_lines_media.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_action_mode_bar.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_action_mode_bar.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_action_mode_bar.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/select_dialog_item_material.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/select_dialog_item_material.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/select_dialog_item_material.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/com_facebook_activity_layout.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-common-4.34.0.aar/71561d6e71c9ecd055de48e3e7c241dd/res/layout/com_facebook_activity_layout.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-common-4.34.0.aar/974085b268930c10e4918ba2b6111f1b/res/layout/com_facebook_activity_layout.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/fps_view.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/react-native-0.56.0.aar/0085766def0c13cc2f0837a5dabce840/res/layout/fps_view.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/react-native-0.56.0.aar/09e4737c0151af5d8f54dfe55699ed09/res/layout/fps_view.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/notification_media_action.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/304a1c831650b843b4934ed3745e3592/res/layout/notification_media_action.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/a962cb07568906b06f827ac67ec321df/res/layout/notification_media_action.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/surface_view.xml",
@@ -209,46 +217,50 @@
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/redbox_item_title.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/react-native-0.56.0.aar/0085766def0c13cc2f0837a5dabce840/res/layout/redbox_item_title.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/react-native-0.56.0.aar/09e4737c0151af5d8f54dfe55699ed09/res/layout/redbox_item_title.xml"
+    },
+    {
+        "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/rzp_magic_base.xml",
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/checkout-1.4.9.aar/de9431375ae67b16ab065b790ecf07c1/res/layout/rzp_magic_base.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_screen_simple_overlay_action_mode.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_screen_simple_overlay_action_mode.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_screen_simple_overlay_action_mode.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/com_facebook_device_auth_dialog_fragment.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-common-4.34.0.aar/71561d6e71c9ecd055de48e3e7c241dd/res/layout/com_facebook_device_auth_dialog_fragment.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-common-4.34.0.aar/974085b268930c10e4918ba2b6111f1b/res/layout/com_facebook_device_auth_dialog_fragment.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/messenger_button_send_blue_round.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/1da31f6f664fd782d307f2a970d6b2c6/res/layout/messenger_button_send_blue_round.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/37d6c0c4380d9981dfb576a6bf9f9b89/res/layout/messenger_button_send_blue_round.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/com_facebook_login_fragment.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-common-4.34.0.aar/71561d6e71c9ecd055de48e3e7c241dd/res/layout/com_facebook_login_fragment.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-common-4.34.0.aar/974085b268930c10e4918ba2b6111f1b/res/layout/com_facebook_login_fragment.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/tooltip.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/tooltip.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/tooltip.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_dialog_title_material.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_dialog_title_material.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_dialog_title_material.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_screen_toolbar.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_screen_toolbar.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_screen_toolbar.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/messenger_button_send_white_round.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/1da31f6f664fd782d307f2a970d6b2c6/res/layout/messenger_button_send_white_round.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/facebook-messenger-4.34.0.aar/37d6c0c4380d9981dfb576a6bf9f9b89/res/layout/messenger_button_send_white_round.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_activity_chooser_view.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_activity_chooser_view.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_activity_chooser_view.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/layout/abc_action_bar_up_container.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/layout/abc_action_bar_up_container.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/layout/abc_action_bar_up_container.xml"
     }
 ]

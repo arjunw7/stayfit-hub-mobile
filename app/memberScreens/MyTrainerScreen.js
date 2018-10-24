@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { Avatar, Icon, SocialIcon } from 'react-native-elements';
+import { Avatar} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import DatePicker from 'react-native-datepicker';
-import { Picker } from 'react-native-picker-dropdown';
 import {
   StyleSheet,
   Text,
   View,
   Dimensions,
   TextInput,
-  AsyncStorage
+  AsyncStorage,
+  KeyboardAvoidingView,
+  ActivityIndicator
 } from 'react-native';
 import axios from 'axios';
 var width = Dimensions.get('window').width;
@@ -18,6 +18,7 @@ export default class MyTrainerScreen extends Component {
     constructor(props) {
       super(props);
       this.state = {
+        done:false
       }     
   }
   componentWillMount(){
@@ -27,14 +28,16 @@ export default class MyTrainerScreen extends Component {
       .then((response) => {
             axios.get(response.data._links.trainer.href)
               .then((response2) => {
-                  this.setState({trainer:response2.data})
+                  this.setState({trainer:response2.data, done:true})
               })
               .catch((error) => {
-                alert(error)
+                console.log(error)
+                this.setState({done:true})
               })
       })
       .catch((error) => {
-        alert(error)
+        console.log(error)
+        this.setState({done:true})
       })
       this.setState({user:JSON.parse(member)})
     })
@@ -55,7 +58,6 @@ export default class MyTrainerScreen extends Component {
            <TextInput
                 maxLength={30}
                 style={styles.inputStyle}
-                placeholder="Name"
                 value={this.state.trainer.name}
                 editable={false}
               />
@@ -64,7 +66,6 @@ export default class MyTrainerScreen extends Component {
                 maxLength={40}
                 keyboardType="email-address"
                 style={styles.inputStyle}
-                placeholder="Email"
                 value={this.state.trainer.email}
                 editable={false}
               />
@@ -72,7 +73,6 @@ export default class MyTrainerScreen extends Component {
             <TextInput
                 maxLength={10}
                 style={styles.inputStyle}
-                placeholder="Gender"
                 value={this.state.trainer.gender}
                 editable={false}
               />
@@ -81,7 +81,6 @@ export default class MyTrainerScreen extends Component {
                 maxLength={10}
                 keyboardType="phone-pad"
                 style={styles.inputStyle}
-                placeholder="Mobile number"
                 value={this.state.trainer.phone}
                 editable={false}
               />
@@ -97,8 +96,31 @@ export default class MyTrainerScreen extends Component {
   }
   render() {
     const { navigate } = this.props.navigation;
-    return (
-      <View style={styles.container}>
+    if(this.state.done==true){
+      return(
+        <KeyboardAvoidingView style={styles.container}>
+        <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+        <Avatar
+          size="small"
+          rounded
+          icon={{name: 'arrow-back'}}
+          onPress={() => navigate('Profile')}
+          containerStyle={{margin: 30}}
+        />
+        <Text style={{
+          fontSize:24,
+          color:'white',
+          marginLeft:30,
+          marginTop:-10
+        }}>My Trainer</Text>
+      </LinearGradient>
+      {this.renderTrainer()}
+    </KeyboardAvoidingView>
+      )
+    }
+    else{
+      return(
+        <View>
           <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
           <Avatar
             size="small"
@@ -113,10 +135,13 @@ export default class MyTrainerScreen extends Component {
             marginLeft:30,
             marginTop:-10
           }}>My Trainer</Text>
-        </LinearGradient>
-        {this.renderTrainer()}
-      </View>
-    );
+          </LinearGradient>
+          <View style={styles.loader}>
+          <ActivityIndicator size="large" color="grey" />
+          </View>
+          </View>
+      )
+    }
   }
 }
 
@@ -174,6 +199,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   loader:{
-    marginTop:'100%',
+    height:"100%",
+    backgroundColor:"rgba(255,255,255,0.5)",
+    paddingTop:"70%"
   }
 });

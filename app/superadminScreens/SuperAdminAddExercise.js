@@ -88,6 +88,7 @@ export default class SuperAdminAddExercise extends Component {
               marginTop:-10
             }}>Add Exercise</Text>
           </LinearGradient>
+          <ScrollView>
           <View style={styles.inputForm}>
             <View style={styles.inputContainer}>
               <Icon name='rename-box' type='material-community' color="#595959"/>
@@ -114,6 +115,7 @@ export default class SuperAdminAddExercise extends Component {
                   </View>
               </TouchableHighlight>
           </View>
+          </ScrollView>
         </View>
       );
     }

@@ -4,13 +4,39 @@
             "outputFile": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-sw600dp-v13/values-sw600dp-v13.xml",
             "map": [
                 {
-                    "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/values-sw600dp-v13/values-sw600dp-v13.xml",
+                    "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/values-sw600dp-v13/values-sw600dp-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
                         "startOffsets": "55,124,193,263,337,413,472,543",
                         "endColumns": "68,68,69,73,75,58,70,67",
                         "endOffsets": "119,188,258,332,408,467,538,606"
+                    },
+                    "to": {
+                        "startLines": "3,4,5,6,7,8,9,10",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "93,162,231,301,375,451,510,581",
+                        "endColumns": "68,68,69,73,75,58,70,67",
+                        "endOffsets": "157,226,296,370,446,505,576,644"
+                    }
+                },
+                {
+                    "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/checkout-1.4.9.aar/de9431375ae67b16ab065b790ecf07c1/res/values-sw600dp-v13/values-sw600dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,93",
+                        "endLines": "2,13",
+                        "endColumns": "37,12",
+                        "endOffsets": "88,745"
+                    },
+                    "to": {
+                        "startLines": "2,11",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,649",
+                        "endLines": "2,21",
+                        "endColumns": "37,12",
+                        "endOffsets": "88,1301"
                     }
                 }
             ]
@@ -19,13 +45,39 @@
             "outputFile": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/values-sw600dp-v13/values-sw600dp-v13.xml",
             "map": [
                 {
-                    "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/values-sw600dp-v13/values-sw600dp-v13.xml",
+                    "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/values-sw600dp-v13/values-sw600dp-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
                         "startOffsets": "55,124,193,263,337,413,472,543",
                         "endColumns": "68,68,69,73,75,58,70,67",
                         "endOffsets": "119,188,258,332,408,467,538,606"
+                    },
+                    "to": {
+                        "startLines": "3,4,5,6,7,8,9,10",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "93,162,231,301,375,451,510,581",
+                        "endColumns": "68,68,69,73,75,58,70,67",
+                        "endOffsets": "157,226,296,370,446,505,576,644"
+                    }
+                },
+                {
+                    "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/checkout-1.4.9.aar/de9431375ae67b16ab065b790ecf07c1/res/values-sw600dp-v13/values-sw600dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,93",
+                        "endLines": "2,13",
+                        "endColumns": "37,12",
+                        "endOffsets": "88,745"
+                    },
+                    "to": {
+                        "startLines": "2,11",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,649",
+                        "endLines": "2,21",
+                        "endColumns": "37,12",
+                        "endOffsets": "88,1301"
                     }
                 }
             ]

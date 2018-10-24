@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/Cellar/yarn/1.9.4/libexec/bin/yarn.js
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.9.4/libexec/bin/yarn.js add react-native-splash-screen@3.0.6
 
 PATH: 
   /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
@@ -23,7 +23,7 @@ Trace:
       at Request.module.exports.Request.onRequestResponse (/usr/local/Cellar/yarn/1.9.4/libexec/lib/cli.js:138345:10)
       at emitOne (events.js:116:13)
       at ClientRequest.emit (events.js:211:7)
-      at HTTPParser.parserOnIncomingClient [as onIncoming] (_http_client.js:543:21)
+      at HTTPParser.parserOnIncomingClient (_http_client.js:543:21)
       at HTTPParser.parserOnHeadersComplete (_http_common.js:112:17)
 
 npm manifest: 
@@ -38,27 +38,34 @@ npm manifest:
       "dependencies": {
           "accordion-collapse-react-native": "^0.1.6",
           "axios": "^0.18.0",
+          "generator-rn-toolbox": "^3.4.0",
           "link": "^0.1.5",
           "moment": "^2.22.2",
           "native-base": "^2.8.0",
           "react": "16.4.1",
           "react-native": "0.56.0",
           "react-native-accordion": "^1.0.1",
+          "react-native-actionsheet": "^2.4.2",
           "react-native-camera": "^1.2.0",
+          "react-native-confirmation-code-input": "^1.0.4",
           "react-native-datepicker": "^1.7.2",
+          "react-native-datepicker-dialog": "0.0.9",
           "react-native-elements": "^0.19.1",
           "react-native-fbsdk": "^0.8.0",
           "react-native-linear-gradient": "^2.4.2",
           "react-native-multiple-select": "^0.4.4",
           "react-native-picker-dropdown": "^0.1.2",
           "react-native-qrcode-scanner": "^1.1.0",
+          "react-native-razorpay": "^2.0.9",
           "react-native-select-multiple": "^1.2.0",
           "react-native-splash-screen": "^3.1.1",
           "react-native-star-rating": "^1.1.0",
+          "react-native-textinput-effects": "^0.4.2",
           "react-native-vector-icons": "^5.0.0",
           "react-navigation": "^2.12.1",
           "react-navigation-material-bottom-tabs": "^0.3.0",
-          "uuid": "^3.3.2"
+          "uuid": "^3.3.2",
+          "yo": "^2.0.5"
       },
       "devDependencies": {
           "babel-jest": "23.4.2",

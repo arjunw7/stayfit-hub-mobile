@@ -2,18 +2,16 @@ import React, { Component } from 'react';
 import { Avatar, Icon, SocialIcon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
-import QRCodeScanner from 'react-native-qrcode-scanner';
 import {
   StyleSheet,
   Text,
   View,
   Dimensions,
-  TextInput,
-  TouchableHighlight,
   AsyncStorage,
-  TouchableOpacity,
-  Linking
+  Linking,
+  Vibration,
 } from 'react-native';
+import Camera from 'react-native-camera';
 import CONFIG from '../config/config'
 var width = Dimensions.get('window').width;
 export default class AttendanceScanner extends Component {
@@ -24,12 +22,51 @@ export default class AttendanceScanner extends Component {
     constructor(props) {
         super(props);
             this.state = {
+              appointment: JSON.parse(this.props.navigation.state.params.appointment),
+              scanning: true,
+              cameraType: Camera.constants.Type.back
+        }
+        
+    }
+    
+    
+    componentDidMount(){
+      AsyncStorage.getItem('member').then((member) => {
+        this.setState({user: JSON.parse(member)})
+      })
+    }
+    getInitialState() {
+        return {
+            scanning: true,
+            cameraType: Camera.constants.Type.back
         }
     }
-    onSuccess(e) {
-        Linking
-        .openURL(e.data)
-        .catch(err => console.error('An error occured', err));
+    _handleBarCodeRead(e) {
+        this.setState({scanning: false});
+        if(e.data==('http://'+this.state.appointment.fitnessCenter.name)){
+          var data = {
+            timeAttended:new Date(),
+            date: this.state.appointment.date,
+            timeSlot: this.state.appointment.timeSlot
+          }
+          axios.put(CONFIG.base_url + 'appointments/'+this.state.appointment.id, data)
+              .then((response) => {
+                 const { navigate } = this.props.navigation;
+                 navigate("Plan")
+                 alert("Attendance has been updated.")
+              })
+              .catch((error) => {
+                  alert("Please scan a valid QR code.")
+                  const { navigate } = this.props.navigation;
+                  navigate("Plan")
+              }) 
+        }
+        else{
+          alert("Please scan a valid QR code.")
+          const { navigate } = this.props.navigation;
+          navigate("Plan")
+        }
+        return;
     }
 
     componentWillMount(){
@@ -39,8 +76,9 @@ export default class AttendanceScanner extends Component {
     }
       render() {
         const { navigate } = this.props.navigation;
-        return (
-          <View style={styles.container}>
+        if(this.state.scanning){
+            return(
+              <View style={styles.container}>
               <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
               <Avatar
                 size="small"
@@ -56,16 +94,37 @@ export default class AttendanceScanner extends Component {
                 marginTop:-10
               }}>Attendance Update</Text>
             </LinearGradient>
-            <QRCodeScanner
-                onRead={this.onSuccess.bind(this)}
-                topContent={
-                <Text style={styles.centerText}>
-                   Scan the QR code at the branch to update your sttendance.
-                </Text>
-                }
-            />
+            <View style={styles.rectangleContainer}>
+            <Camera style={styles.camera} type={this.state.cameraType} onBarCodeRead={this._handleBarCodeRead.bind(this)}>
+                <View style={styles.rectangleContainer}>
+                <View style={styles.rectangle}/>
+                </View>            
+            </Camera>
+            </View>
           </View>
-        );
+            )
+        }
+          return (
+            <View style={styles.container}>
+                <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+                <Avatar
+                  size="small"
+                  rounded
+                  icon={{name: 'arrow-back'}}
+                  onPress={() => navigate('Plan')}
+                  containerStyle={{margin: 30}}
+                />
+                <Text style={{
+                  fontSize:24,
+                  color:'white',
+                  marginLeft:30,
+                  marginTop:-10
+                }}>Attendance Update</Text>
+              </LinearGradient>
+              <View style={styles.rectangleContainer}>
+              </View>
+            </View>
+          );
       }
     }
     
@@ -103,5 +162,27 @@ export default class AttendanceScanner extends Component {
         fontSize: 12,
         padding: 32,
         color: '#777',
-    }
+    },
+    camera: {
+        flex: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
+        height: Dimensions.get('window').width,
+        width: Dimensions.get('window').width,
+    }, 
+    rectangleContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'transparent',
+    },
+
+    rectangle: {
+      height: 250,
+      width: 250,
+      borderWidth: 2,
+      borderColor: '#00FF00',
+      backgroundColor: 'transparent',
+    },  
     });

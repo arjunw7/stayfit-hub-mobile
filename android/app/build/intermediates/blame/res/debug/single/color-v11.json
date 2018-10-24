@@ -1,10 +1,10 @@
 [
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_dark.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
     },
     {
         "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_light.xml",
-        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bf4e779d4e3842bff41aa53dbdac271e/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
+        "source": "/Users/a0w015p/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7fa37a3f3118337580ad7e1c53d42b0f/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
     }
 ]

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Avatar, FormLabel, FormInput, Button } from 'react-native-elements';
+import { Avatar, FormLabel, Button } from 'react-native-elements';
 import {
   StyleSheet,
   Text,
@@ -7,7 +7,8 @@ import {
   TouchableHighlight,
   Dimensions,
   TextInput,
-  AsyncStorage
+  ScrollView,
+  KeyboardAvoidingView
 } from 'react-native';
 var width = Dimensions.get('window').width;
 import CONFIG from '../config/config'
@@ -47,11 +48,11 @@ export default class MemberDetailsScreen extends Component {
     if(!this.state.gender || !this.state.name || !this.state.height || !this.state.weight){
       alert("Please enter all the details.")
     }
-    else if(parseFloat(this.state.height)>10){
-      alert("Your height seems to be incorrect. Plase verify.")
+    else if(parseFloat(this.state.height)>10 || parseFloat(this.state.height)<3){
+      alert("Your height seems to be incorrect. Please verify.")
     }
-    else if(parseFloat(this.state.weight)>200 ||parseFloat(this.state.weight)<20){
-      alert("Your weight seems to be incorrect. Plase verify.")
+    else if(parseFloat(this.state.weight)>200 ||parseFloat(this.state.weight)<30){
+      alert("Your weight seems to be incorrect. Please verify.")
     }
     else {
       var member = {
@@ -69,7 +70,7 @@ export default class MemberDetailsScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
          <Avatar
           size="small"
           rounded
@@ -77,6 +78,7 @@ export default class MemberDetailsScreen extends Component {
           onPress={() => navigate('GoalSelection')}
           containerStyle={{margin: 30}}
         />
+        <ScrollView>
         <View style={styles.innerContainer}>
           <Text style={styles.infoText}>
             Tell us more about you!
@@ -138,7 +140,8 @@ export default class MemberDetailsScreen extends Component {
             </TouchableHighlight>
           </View>
         </View>
-      </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

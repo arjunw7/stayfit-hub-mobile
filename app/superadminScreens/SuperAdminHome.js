@@ -8,7 +8,8 @@ import {
     Dimensions,
     TouchableOpacity,
     AsyncStorage,
-    ActivityIndicator
+    ActivityIndicator,
+    ScrollView
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import CONFIG from '../config/config'
@@ -75,6 +76,7 @@ static navigationOptions = {
                     {this.state.user.email}
                   </Text>
               </LinearGradient>
+              <ScrollView>
               <View style={styles.mainIcons}>
                 <TouchableOpacity style={styles.mainIcon} onPress={() => navigate('SuperAdminMemberHome')}> 
                   <Icon
@@ -161,6 +163,7 @@ static navigationOptions = {
                     <Text style={styles.iconText}>Stats</Text>
                 </TouchableOpacity>
               </View>
+              </ScrollView>
         </View>
       );
     }

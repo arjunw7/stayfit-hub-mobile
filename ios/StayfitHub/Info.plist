@@ -94,10 +94,9 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 	</array>
-  <key>NSCameraUsageDescription</key>
-  <string>Stayfit will access your camera</string>
-  <!-- Include this only if you are planning to use the camera roll -->
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>Stayfit will access your camera.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Stayfit will access your camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Stayfit will access your camera.</string>
 </dict>
 </plist>

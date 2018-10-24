@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Avatar, Icon, SocialIcon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
-import { Picker } from 'react-native-picker-dropdown'
+import ActionSheet from 'react-native-actionsheet'
 import {
   StyleSheet,
   Text,
@@ -12,15 +12,38 @@ import {
   TextInput,
   AsyncStorage,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView
 } from 'react-native';
 var width = Dimensions.get('window').width;
 import CONFIG from '../config/config'
+const optionsAlcohol = [
+  "Heavy",
+  "Moderate",
+  "Non Alcoholic",
+  "Used to drink",
+  "Cancel"
+]
+const optionsSmoking = [
+  "Heavy",
+  "Moderate",
+  "Non Smoker",
+  "Used to Smoke",
+  "Cancel"
+]
+const optionsActivity = [
+  "Sedentary",
+  "Low Activity Level",
+  "Active",
+  "Very Active",
+  "Cancel"
+]
 export default class HealthProfileScreen extends Component {
   constructor(props) {
     super(props);
       this.state ={
-          goalsList:[]
+          goalsList:[],
+          optionsGoalList:[]
       }
       axios.get(CONFIG.base_url + 'goals')
         .then((response) => {
@@ -41,37 +64,68 @@ export default class HealthProfileScreen extends Component {
       var goalURL = user._links.goal.href
       axios.get(goalURL)
         .then((response) => {
-            this.setState({goal:response.data})
+            user.goal = response.data
+            this.setState({goalId:response.data.id})
         })
         .catch((error) => {
-            alert(error)
+            console.log(error)
         })
-      this.setState({user:JSON.parse(member)})
+      this.setState({user:user})
     })
+  }
+  optionsGoalList = []
+  optionsGoalListID = []
+  goalMap = new Object();
+  componentDidMount(){
+      axios.get(CONFIG.base_url + 'goals')
+      .then((response) => {
+          var goals = response.data._embedded.goals;
+          for(var i=0; i<goals.length; i++){
+            this.goalMap[goals[i].id] = goals[i];
+          }
+          this.setState({ 
+              goalMap: this.goalMap,
+          })
+          this.setOptions(goals)
+      })
+      .catch((error) => {
+          console.log(error)
+      }) 
+  }
+  setOptions(goalList){
+    for(var i=0; i<goalList.length; i++){
+        this.optionsGoalList.push(goalList[i].name)
+        this.optionsGoalListID.push(goalList[i].id)
+    }
+    this.optionsGoalList.push("Cancel")
+    this.setState({
+        optionsGoalList:this.optionsGoalList,
+        optionsGoalListID: this.optionsGoalListID
+    })
+  }
+  showLoader(){
+    if(this.state.showLoader){
+        return(
+          <View style={styles.ploader}>
+              <ActivityIndicator size="large" color="grey" />
+          </View>
+        )
+    }
   }
 
   getGoal(){
+    this.setState({showLoader: true})
     var goalURL = this.state.user._links.goal.href
     axios.get(goalURL)
         .then((response) => {
-            this.setState({goal:response.data})
+          var member  = this.state.user
+          member.goal = response.data
+          this.setState({user:member, showLoader: false})
         })
         .catch((error) => {
             alert(error)
+            this.setState({showLoader: false})
         })
-  }
- 
-  async saveItem(item, selectedValue) {
-    try {
-        await AsyncStorage.setItem(item, selectedValue);
-    } catch (error) {
-        alert("AsyncStorage error")
-        console.error('AsyncStorage error: ' + error.message);
-    }
-    }
-  
-  submitChanges(){
-    alert("Changes saved successfully.")
   }
   updateHeight(itemValue){
     var tempMember = this.state.user;
@@ -93,11 +147,6 @@ export default class HealthProfileScreen extends Component {
     tempMember.hipSize = itemValue
     this.setState({user:tempMember})
   }
-  updateAlcohol(itemValue){
-    var tempMember = this.state.user;
-    tempMember.alcoholStatus = itemValue
-    this.setState({user:tempMember})
-  }
   updateActivity(itemValue){
     var tempMember = this.state.user;
     tempMember.activityStatus = itemValue
@@ -109,165 +158,71 @@ export default class HealthProfileScreen extends Component {
     this.setState({user:tempMember})
   }
   updateGoal(itemIndex){
-    axios.get(CONFIG.base_url + 'goals/'+itemIndex)
-    .then((response) => {
-        var updatedGoal = response.data._links.self.href
-        var goalURL = this.state.user._links.goal.href
-        axios({ 
-          method: 'PUT', 
-          url: goalURL,
-          headers: {
-            "Content-Type": "text/uri-list"},
-          data: updatedGoal
-         })
-        .then((response) => {
-           this.getGoal()
-        })
-        .catch((error) => {
-            console.log(error)
-            alert(JSON.stringify(error))
-        })
-    })
-    .catch((error) => {
-        console.log(error)
-        alert(JSON.stringify(error))
-    })
+    var user = this.state.user;
+    user.goal = this.state.goalMap[itemIndex]
+    user.goalID = this.state.goalMap[itemIndex].id
+    this.setState({user:user})
+  }
+  async saveItem(item, selectedValue) {
+    try {
+        await AsyncStorage.setItem(item, selectedValue);
+    } catch (error) {
+        alert("AsyncStorage error")
+        console.error('AsyncStorage error: ' + error.message);
+    }
   }
   updateMember(){
-      axios.put(CONFIG.base_url + 'members/'+this.state.user.id, this.state.user)
+    var member = this.state.user
+    if(member.goal) 
+    {
+      delete member.goal
+    }
+    if(parseFloat(member.height)>10 || parseFloat(member.height)<3){
+      alert("Your height seems to be incorrect. Please verify.")
+    }
+    else if(parseFloat(member.weight)>200 ||parseFloat(member.weight)<30){
+      alert("Your weight seems to be incorrect. Please verify.")
+    }
+    else{
+      this.setState({showLoader: true})
+      axios.put(CONFIG.base_url + 'members/'+this.state.user.id, member)
       .then((response) => {
           axios.get(CONFIG.base_url + 'members/'+this.state.user.id)
           .then((response) => {
               this.saveItem('member', JSON.stringify(response.data))
               this.setState({user:response.data})
               alert("Member details updated.")
+              const { navigate } = this.props.navigation;
+              navigate("Profile")
+              this.setState({showLoader: false})
           })
           .catch((error) => {
               console.log(error)
               alert(error)
+              this.setState({showLoader: false})
           })
       })
       .catch((error) => {
           console.log(error)
           alert(error)
+          this.setState({showLoader: false})
       })
     }
-  renderGoal(){
-    if(this.state.goal){
-      return(
-        <Picker
-              selectedValue={this.state.goal.id}
-              style={styles.inputStyle}
-              placeholder="Select goal"
-              onValueChange={(itemIndex) => this.updateGoal(itemIndex)}>   
-              {
-                this.state.goalsList
-                .map((item, i) => (
-                  <Picker.Item key={i} label={item.name} value={item.id} />
-                ))
-              }
-        </Picker>
-      )
-    } else{
-      return(
-        <Picker
-              style={styles.inputStyle}
-              placeholder="Select goal"
-              onValueChange={(itemIndex) => this.updateGoal(itemIndex)}>  
-              {
-                this.state.goalsList
-                .map((item, i) => (
-                  <Picker.Item key={i} label={item.name} value={item.id} />
-                ))
-              }
-        </Picker>
-      )
     }
+
+  showActionSheetAlcohol = () => {
+    this.ActionSheetAlcohol.show()
   }
-   renderSmoking(){
-    if(this.state.goal){
-      return(
-        <Picker
-              selectedValue={this.state.user.smokingStatus}
-              style={styles.inputStyle}
-              placeholder="Select goal"
-              onValueChange={(itemIndex) => this.updateSmoking(itemIndex)}>   
-              <Picker.Item label={"Heavy"} value={"Heavy"} />
-              <Picker.Item label={"Moderate"} value={"Moderate"} />
-              <Picker.Item label={"No Smoker"} value={"No Smoker"} />
-              <Picker.Item label={"Used to be a smoker"} value={"Used to be a smoker"} />
-        </Picker>
-      )
-    } else{
-      return(
-        <Picker
-              style={styles.inputStyle}
-              placeholder="Select goal"
-              onValueChange={(itemIndex) => this.updateSmoking(itemIndex)}>  
-              <Picker.Item label={"Heavy"} value={"Heavy"} />
-              <Picker.Item label={"Moderate"} value={"Moderate"} />
-              <Picker.Item label={"No Smoker"} value={"No Smoker"} />
-              <Picker.Item label={"Used to be a smoker"} value={"Used to be a smoker"} />
-        </Picker>
-      )
-    }
+  showActionSheetSmoking = () => {
+    this.ActionSheetSmoking.show()
   }
-  renderAlcohol(){
-    if(this.state.goal){
-      return(
-        <Picker
-              selectedValue={this.state.user.alcoholStatus}
-              style={styles.inputStyle}
-              placeholder="Select goal"
-              onValueChange={(itemIndex) => this.updateAlcohol(itemIndex)}>   
-              <Picker.Item label={"Heavy"} value={"Heavy"} />
-              <Picker.Item label={"Moderate"} value={"Moderate"} />
-              <Picker.Item label={"No Driking"} value={"No Drinking"} />
-              <Picker.Item label={"Used to drink"} value={"Used to drink"} />
-        </Picker>
-      )
-    } else{
-      return(
-        <Picker
-              style={styles.inputStyle}
-              placeholder="Select goal"
-              onValueChange={(itemIndex) => this.updateAlcohol(itemIndex)}>  
-              <Picker.Item label={"Heavy"} value={"Heavy"} />
-              <Picker.Item label={"Moderate"} value={"Moderate"} />
-              <Picker.Item label={"No Smoker"} value={"No Smoker"} />
-              <Picker.Item label={"Used to be a smoker"} value={"Used to be a smoker"} />
-        </Picker>
-      )
-    }
+  showActionSheetActivity = () => {
+    this.ActionSheetActivity.show()
   }
-  renderActivity(){
-    if(this.state.goal){
-      return(
-        <Picker
-              selectedValue={this.state.user.activityStatus}
-              style={styles.inputStyle}
-              placeholder="Select goal"
-              onValueChange={(itemIndex) => this.updateActivity(itemIndex)}>   
-              <Picker.Item label={"Sedentary"} value={"Sedentary"} />
-              <Picker.Item label={"Low Active Level"} value={"Low Active Level"} />
-              <Picker.Item label={"Active"} value={"Active"} />
-              <Picker.Item label={"Very active"} value={"Very active"} />
-        </Picker>
-      )
-    } else{
-      return(
-        <Picker
-              style={styles.inputStyle}
-              placeholder="Select goal"
-              onValueChange={(itemIndex) => this.updateActivity(itemIndex)}>  
-              <Picker.Item label={"Heavy"} value={"Heavy"} />
-              <Picker.Item label={"Moderate"} value={"Moderate"} />
-              <Picker.Item label={"No Smoker"} value={"No Smoker"} />
-              <Picker.Item label={"Used to be a smoker"} value={"Used to be a smoker"} />
-        </Picker>
-      )
-    }
+  showActionSheetGoal = () => {
+    this.ActionSheetGoal.show()
   }
+
   renderWeight(){
     if(this.state.user.weight){
       return(
@@ -300,7 +255,7 @@ export default class HealthProfileScreen extends Component {
                 maxLength={4}
                 keyboardType="decimal-pad"
                 style={styles.inputStyle}
-                placeholder="Enter weight"
+                placeholder="Enter waist"
                 value={this.state.user.waistSize.toString()}
                 onChangeText={(weight) => this.updateWaist(weight)}
               />
@@ -312,7 +267,7 @@ export default class HealthProfileScreen extends Component {
               maxLength={4}
               keyboardType="decimal-pad"
               style={styles.inputStyle}
-              placeholder="Enter weight"
+              placeholder="Enter waist"
               onChangeText={(weight) => this.updateWaist(weight)}
             />
     )
@@ -325,7 +280,7 @@ export default class HealthProfileScreen extends Component {
                 maxLength={4}
                 keyboardType="decimal-pad"
                 style={styles.inputStyle}
-                placeholder="Enter height"
+                placeholder="Enter hip size"
                 value={this.state.user.hipSize.toString()}
                 onChangeText={(height) => this.updateHip(height)}
               />
@@ -337,7 +292,7 @@ export default class HealthProfileScreen extends Component {
               maxLength={4}
               keyboardType="decimal-pad"
               style={styles.inputStyle}
-              placeholder="Enter height"
+              placeholder="Enter hip size"
               onChangeText={(height) => this.updateHip(height)}
             />
     )
@@ -368,16 +323,48 @@ export default class HealthProfileScreen extends Component {
     )
     }
   }
+  calculateIdealWeight(){
+    if(parseFloat(this.state.user.height)>0){
+      var height = this.state.user.height;
+      var heightFoot = parseInt(this.state.user.height);
+      var heightInches = parseFloat(this.state.user.height)-heightFoot;
+      var idealWeight = "NA";
+      if(this.state.user.gender=="Male"){
+        if(height) idealWeight = height>5 ? 56.2+heightInches*1.42:56.2
+      }
+      else if(this.state.user.gender=="Female"){
+        if(height) idealWeight = height>5 ? 53.1+heightInches*1.35:53.1
+      }
+      return idealWeight.toFixed(2);
+    }
+    else return "NA"
+  }
+  
+  getBMIstatus(){
+    var bmi = parseFloat(this.calculateBMI());
+    if(bmi<=18.5) return "UNDERWEIGHT";
+    else if(bmi>18.5 && bmi<=24.9) return "NORMAL"
+    else if(bmi>24.9 && bmi<=29.9) return "OVERWEIGHT"
+    else if(bmi>29.9) return "OBESE"
+    else return " "
+  }
   calculateBMI(){
-    var w = this.state.user.weight
-    var h = this.state.user.height * 0.3
-    return Math.round(w / h / h * 10) / 10
+    if(this.state.user.height!=null && this.state.user.weight!==null){
+      var w = this.state.user.weight
+      var h = this.state.user.height * 0.3
+      if(w && h)
+      return Math.round(w / h / h * 10) / 10
+      else 
+      return "NA"
+    }
+    else return "NA"
   }
   render() {
     const { navigate } = this.props.navigation;
-    if(this.state.user && this.state.goalsList){
+    if(this.state.user && this.state.optionsGoalList.length>0){
       return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}>
+          {this.showLoader()}
             <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
             <Avatar
               size="small"
@@ -404,13 +391,112 @@ export default class HealthProfileScreen extends Component {
             <Text style={styles.label}>Your hip size(in inches)</Text>
             {this.renderHip()}
             <Text style={styles.label}>Your fitness goal</Text>
-            {this.renderGoal()}
+            <TouchableHighlight onPress={this.showActionSheetGoal} underlayColor="transparent">
+                <View style={styles.row}>
+                    <Text style={styles.centerText} >{this.state.user.goal? this.state.user.goal.name: "Select Goal"}</Text> 
+                    <Icon
+                    name='chevron-small-down'
+                    color='#E62221'
+                    type='entypo'
+                    containerStyle={{
+                        position:'absolute',
+                        right:5
+                    }} />
+                </View>
+                </TouchableHighlight>
+                <ActionSheet
+                    ref={o => this.ActionSheetGoal = o}
+                    title={'Fitness Goal?'}
+                    options={this.optionsGoalList}
+                    cancelButtonIndex={this.optionsGoalList.length-1}
+                    destructiveButtonIndex={this.optionsGoalList.length-1}
+                    onPress={(index) => { 
+                            if(index!=this.optionsGoalList.length-1){
+                              this.updateGoal(this.optionsGoalListID[index])
+                            }
+                    }}
+                />
             <Text style={styles.label}>How active are you?</Text>
-            {this.renderActivity()}
+            <TouchableHighlight onPress={this.showActionSheetActivity} underlayColor="transparent">
+              <View style={styles.row}>
+                <Text style={styles.centerText}>{this.state.user.activityStatus?this.state.user.activityStatus: "Select daily activity"}</Text> 
+                <Icon
+                name='chevron-small-down'
+                color='#E62221'
+                type='entypo'
+                containerStyle={{
+                    position:'absolute',
+                    right:5
+                }} />
+              </View>
+              </TouchableHighlight>
+              <ActionSheet
+              ref={o => this.ActionSheetActivity = o}
+              title={'Daily activity?'}
+              options={optionsActivity}
+              cancelButtonIndex={4}
+              destructiveButtonIndex={4}
+              onPress={(index) => { 
+                      if(index!=4){
+                        var tempMember = this.state.user;
+                        tempMember.activityStatus = optionsActivity[index]
+                        this.setState({user:tempMember})
+                      }
+              }}/>
             <Text style={styles.label}>How much do you smoke?</Text>
-            {this.renderSmoking()}
+            <TouchableHighlight onPress={this.showActionSheetSmoking} underlayColor="transparent">
+              <View style={styles.row}>
+                <Text style={styles.centerText}>{this.state.user.smokingStatus?this.state.user.smokingStatus: "Select smoking intake"}</Text> 
+                <Icon
+                name='chevron-small-down'
+                color='#E62221'
+                type='entypo'
+                containerStyle={{
+                    position:'absolute',
+                    right:5
+                }} />
+              </View>
+              </TouchableHighlight>
+              <ActionSheet
+              ref={o => this.ActionSheetSmoking = o}
+              title={'Smoking intake?'}
+              options={optionsSmoking}
+              cancelButtonIndex={4}
+              destructiveButtonIndex={4}
+              onPress={(index) => { 
+                      if(index!=4){
+                        var tempMember = this.state.user;
+                        tempMember.smokingStatus = optionsSmoking[index]
+                        this.setState({user:tempMember})
+                      }
+              }}/>
             <Text style={styles.label}>How is your alcohol intake?</Text>
-            {this.renderAlcohol()}
+              <TouchableHighlight onPress={this.showActionSheetAlcohol} underlayColor="transparent">
+              <View style={styles.row}>
+                <Text style={styles.centerText}>{this.state.user.alcoholStatus?this.state.user.alcoholStatus: "Select alcohol intake"}</Text> 
+                <Icon
+                name='chevron-small-down'
+                color='#E62221'
+                type='entypo'
+                containerStyle={{
+                    position:'absolute',
+                    right:5
+                }} />
+              </View>
+              </TouchableHighlight>
+              <ActionSheet
+              ref={o => this.ActionSheetAlcohol = o}
+              title={'Alcohol intake?'}
+              options={optionsAlcohol}
+              cancelButtonIndex={4}
+              destructiveButtonIndex={4}
+              onPress={(index) => { 
+                      if(index!=4){
+                        var tempMember = this.state.user;
+                        tempMember.alcoholStatus = optionsAlcohol[index]
+                        this.setState({user:tempMember})
+                      }
+              }}/>
             <View style={styles.bottomSection}>
               <LinearGradient 
                   colors={['#e0e0e0', '#e0e0e0', '#e0e0e0']} style={{
@@ -423,7 +509,7 @@ export default class HealthProfileScreen extends Component {
                 }}>
                 <Text style={styles.mainText}>
                   BODY MASS INDEX</Text>
-                <Text style={styles.subtext}>NORMAL</Text>
+                <Text style={styles.subtext}>{this.getBMIstatus()}</Text>
                 <Text style={styles.bigNumber}>{this.calculateBMI()}</Text>
                 
               </LinearGradient>
@@ -438,7 +524,7 @@ export default class HealthProfileScreen extends Component {
                 <Text style={styles.mainText}>
                   IDEAL WEIGHT</Text>
                 <Text style={styles.subtext}>ACCORDING TO WEIGHT</Text>
-                <Text style={styles.bigNumber}>67.23</Text>
+                <Text style={styles.bigNumber}>{this.calculateIdealWeight()}</Text>
               </LinearGradient>
           </View>
               <TouchableHighlight onPress={() =>this.updateMember()} underlayColor="transparent">
@@ -448,14 +534,32 @@ export default class HealthProfileScreen extends Component {
               </TouchableHighlight>
           </View>
       </ScrollView>
-        </View>
+        </KeyboardAvoidingView>
       );
     }
     else{
       return(
-        <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+        <View style={{height:"100%"}}>
+          <LinearGradient colors={['#b24d2e', '#b23525', '#E62221']} style={styles.headDesign}>
+            <Avatar
+              size="small"
+              rounded
+              icon={{name: 'arrow-back'}}
+              onPress={() => navigate('Profile')}
+              containerStyle={{margin: 30}}
+            />
+            <Text style={{
+              fontSize:24,
+              color:'white',
+              marginLeft:30,
+              marginTop:-10
+            }}>My Health Profile</Text>
+          </LinearGradient>
+          <View style={styles.ploader}>
+              <ActivityIndicator size="large" color="grey" />
+          </View>
         </View>
+          
       )
     }
    
@@ -532,4 +636,29 @@ const styles = StyleSheet.create({
   loginText:{
     color:'white'
   },
+  row:{
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    borderBottomWidth:1,
+    borderBottomColor: '#E62221',
+    width:width-80,
+    marginRight: 10,
+    marginTop:15,
+    paddingBottom: 10,
+  },
+  centerText:{
+    color:'black',
+    fontSize:14,
+    marginLeft: 5,
+  },
+  ploader:{
+    width:width,
+    height:"100%",
+    position:'absolute',
+    zIndex:100,
+    backgroundColor:"rgba(255,255,255,1)",
+    paddingTop:"75%",
+    marginTop:140
+  }
 });

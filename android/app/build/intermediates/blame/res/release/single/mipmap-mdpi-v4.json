@@ -4,7 +4,7 @@
         "source": "/Users/a0w015p/Desktop/StayfitHub/android/app/src/main/res/mipmap-mdpi/ic_launcher.png"
     },
     {
-        "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/mipmap-mdpi-v4/ic_launcher_round.png",
-        "source": "/Users/a0w015p/Desktop/StayfitHub/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png"
+        "merged": "/Users/a0w015p/Desktop/StayfitHub/android/app/build/intermediates/res/merged/release/mipmap-mdpi-v4/icon.png",
+        "source": "/Users/a0w015p/Desktop/StayfitHub/android/app/src/main/res/mipmap-mdpi/icon.png"
     }
 ]

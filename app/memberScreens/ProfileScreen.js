@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import CONFIG from '../config/config'
+import { LoginManager} from 'react-native-fbsdk';
 var width = Dimensions.get('window').width;
 import { Avatar, Header, ListItem } from 'react-native-elements';
 
@@ -58,11 +59,13 @@ export default class ProfileScreen extends Component {
         super(props);
         this.state ={
         }
+        this.props.navigation.addListener('didFocus', () => this.updatePage())
     }
     async userLogout() {
       try {
         await AsyncStorage.removeItem('member');
         const { navigate } = this.props.navigation;
+        LoginManager.logOut()
         navigate("Home")
         
       } catch (error) {
@@ -73,6 +76,20 @@ componentWillMount(){
   AsyncStorage.getItem('member').then((member) => {
     this.setState({member:JSON.parse(member)})
   })
+}
+updatePage(){
+  AsyncStorage.getItem('member').then((member) => {
+    this.getUser(JSON.parse(member).id)
+  })
+}
+getUser(id){
+  axios.get(CONFIG.base_url + 'members/' +id)
+   .then((response) => {
+         this.setState({user:response.data, showLoader: false}) 
+   })
+   .catch((error) => {
+     console.log(error)
+   })
 }
   static navigationOptions = {
     title: 'Profile',
